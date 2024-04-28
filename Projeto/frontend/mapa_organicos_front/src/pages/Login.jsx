@@ -1,13 +1,12 @@
 import { Link } from "react-router-dom"
 import { ButtonCounter } from "../components/ButtonCounter"
+import { LoginForm } from "../components/LoginForm"
 
 
 export default function Login(){
     return (
-        <>
-          <h1 className="bg-slate-500">Login</h1>
-          <Link to="/">Ir para home</Link>
-          <ButtonCounter/>
-        </>
+        <div className="flex flex-col items-center justify-center mt-28">
+          <LoginForm/>
+        </div>
     )
   }
