@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom';
+import { validationMessages } from '../utils/ValidationMessages';
 
 import axios from 'axios';
 
@@ -11,6 +12,7 @@ const AuthProvider = ({children}) => {
         localStorage.getItem("token") ? true : false
     );
     const [ userData, setUserData ] = useState( {} );
+    const [ loginErrorMessages, setLoginErrorMessages ] = useState([])
 
     const login = (userData) => {
         axios.post(`http://localhost:8002/api/auth/login/`, {
@@ -27,11 +29,12 @@ const AuthProvider = ({children}) => {
             setIsAuthenticated(true);
             navigate("/");
         })
-        .catch((err) => {
-            console.log(err)
-            const data = err.response?.data;
-            if (Array.isArray(data.errors)) {
-                // setAuthErrorMessages([...data.errors]);
+        .catch((err) => {            
+            if(err.response.status === 401){
+                const data = err.response?.data;
+                setLoginErrorMessages(
+                    validationMessages[data.detail]
+                )
             }
         });
 
@@ -49,7 +52,10 @@ const AuthProvider = ({children}) => {
         setUserData,
 
         login,
-        logout
+        logout,
+
+        loginErrorMessages, 
+        setLoginErrorMessages
     }
 
     return (

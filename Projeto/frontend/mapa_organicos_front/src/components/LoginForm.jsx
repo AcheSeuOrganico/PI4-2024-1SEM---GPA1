@@ -6,7 +6,7 @@ import logo from '../assets/img/logo.png'
 
 
 export const LoginForm = () => {
-    const { login } = useContext(AuthContext)
+    const { login, loginErrorMessages } = useContext(AuthContext)
     const [ formData, setFormData ] = useState({
         username:'',
         password:''
@@ -69,6 +69,14 @@ export const LoginForm = () => {
                 </div>
             )
            }
+
+           <div className="flex items-center justify-center m-2 p-2 text-red-500 italic ">
+            {
+                loginErrorMessages.map((value, index) => {
+                    return <span key={index}>{value}</span>
+                })
+            }
+           </div>
            
         </form>
     )
