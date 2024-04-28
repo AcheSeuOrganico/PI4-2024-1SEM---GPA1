@@ -5,11 +5,11 @@ import {AuthContext} from '../contexts/AuthContext'
 
 
 export default function ProtectedRoute(){
-	let { authenticated } = useContext(AuthContext);
+	let { isAuthenticated } = useContext(AuthContext);
     
     return (
 		<> 
-            { !authenticated  ? 
+            { !isAuthenticated  ? 
                 <Navigate to="/login" replace/> : ( 
                     <Outlet />
                 )
