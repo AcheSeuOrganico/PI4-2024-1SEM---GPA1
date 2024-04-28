@@ -137,3 +137,6 @@ SIMPLE_JWT = {
     "SIGNING_KEY": config("DJANGO_JWT_SIGNING_KEY", default=SECRET_KEY),
     "TOKEN_OBTAIN_SERIALIZER": "apps.authentication.serializers.JWTLoginSerializer",
 }
+
+
+AUTH_USER_MODEL = "authentication.User"
