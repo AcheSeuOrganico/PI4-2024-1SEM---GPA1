@@ -1,8 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import Group, Permission
-# Create your models here.
-from django.contrib.auth.models import AbstractUser, BaseUserManager as BUM
-from django.db import models
+from django.contrib.auth.models import Group, Permission, AbstractUser, BaseUserManager as BUM
+
+from apps.common.models import Address
 
 
 class BaseUserManager(BUM):
@@ -49,6 +48,7 @@ class User(AbstractUser):
     groups = models.ManyToManyField(Group, related_name='custom_user_groups')
     user_permissions = models.ManyToManyField(Permission, related_name='custom_user_permissions')
     user_type = models.ForeignKey(UserType, on_delete=models.CASCADE, blank=True, null=True)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

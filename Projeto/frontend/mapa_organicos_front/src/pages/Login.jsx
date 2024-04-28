@@ -5,7 +5,7 @@ import { LoginForm } from "../components/LoginForm"
 
 export default function Login(){
     return (
-        <div className="flex flex-col items-center justify-center mt-28">
+        <div className="flex flex-col items-center justify-center my-28">
           <LoginForm/>
         </div>
     )

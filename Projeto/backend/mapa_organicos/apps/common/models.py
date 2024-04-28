@@ -1,3 +1,17 @@
 from django.db import models
 
 # Create your models here.
+
+
+
+class Address(models.Model):
+    cep = models.CharField(max_length=10)
+    type = models.CharField(max_length=25)
+    name = models.CharField(max_length=100)
+    state = models.CharField(max_length=2)
+    district = models.CharField(max_length=100)
+    latitude = models.CharField(max_length=25)
+    longitude = models.CharField(max_length=25)
+
+    def __str__(self):
+        return f"{self.cep}"
