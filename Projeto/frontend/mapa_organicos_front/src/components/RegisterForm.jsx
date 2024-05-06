@@ -39,9 +39,14 @@ export const RegisterForm = () => {
                 .then(
                     res => {
                         const data = res.data;
+                        console.log(data)
                         setFormData((prev) => ({
                             ...prev, 
-                            ['address']: data.address
+                            ['address']: data.address,
+                            ['latitude']: data.lat,
+                            ['longitude']: data.lng,
+                            ['state']: data.state,
+                            ['district']: data.city 
                         }));
                     }
                 ).catch(

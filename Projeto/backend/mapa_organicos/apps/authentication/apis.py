@@ -12,7 +12,9 @@ from rest_framework_simplejwt.views import (
 from django.contrib.auth.models import User
 
 from apps.common.mixins import ApiAuthMixin
-
+from apps.authentication.serializers import (
+    RegisterUserSerializer
+)
 
 class UserLoginApi(TokenObtainPairView):
     pass
@@ -26,7 +28,6 @@ class UserVerifyApi(TokenVerifyView):
     pass
 
 
-#
 class UserMeApi(ApiAuthMixin, APIView):
     class OutputSerializer(serializers.ModelSerializer):
         class Meta:
@@ -44,3 +45,13 @@ class UserMeApi(ApiAuthMixin, APIView):
         data = serializer.data
 
         return Response(data=data, status=status.HTTP_200_OK)
+
+
+class RegisterUserApi(APIView):
+
+    def post(self, request):
+        serializer = RegisterUserSerializer(data=request.data)
+
+        if serializer.is_valid():
+            return Response(data=serializer.data)
+        return Response(data=serializer.errors)
