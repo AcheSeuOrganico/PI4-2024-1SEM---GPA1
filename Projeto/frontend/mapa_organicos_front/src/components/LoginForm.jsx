@@ -1,4 +1,4 @@
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { AuthContext } from "../contexts/AuthContext"
 import { Link } from "react-router-dom"
 
@@ -6,7 +6,7 @@ import logo from '../assets/img/logo.png'
 
 
 export const LoginForm = () => {
-    const { login, loginErrorMessages } = useContext(AuthContext)
+    const { login, loginErrorMessages, logout } = useContext(AuthContext)
     const [ formData, setFormData ] = useState({
         username:'',
         password:''
@@ -25,10 +25,14 @@ export const LoginForm = () => {
         }));
     }
 
-    return (
-        <form className="flex flex-col w-1/3">
+    useEffect(() => {
+        logout()
+    }, [])
 
-            <div>
+    return (
+        <form className="flex flex-col">
+
+            <div className="m-12 w-[20rem]">
                 <img src={logo} />
             </div>
 

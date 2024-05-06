@@ -20,13 +20,13 @@ const AuthProvider = ({children}) => {
             password: userData.password
         })
         .then((res) => {
-            console.log(res)
             const data = res.data
             
             localStorage.setItem('token', data.access);
             localStorage.setItem('refreshToken', data.refresh); 
 
             setIsAuthenticated(true);
+            setLoginErrorMessages([])
             navigate("/");
         })
         .catch((err) => {            
@@ -41,7 +41,11 @@ const AuthProvider = ({children}) => {
     }
 
     const logout = () => {
-
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
+        setUserData({});
+        setIsAuthenticated(false);
+        return <Navigate to="/login" />;
     }
 
     const contextData = {

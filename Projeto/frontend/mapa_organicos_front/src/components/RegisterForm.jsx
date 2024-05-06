@@ -7,6 +7,7 @@ import { RegisterOrganizationFields } from "./RegisterOrganizationFields"
 import axios from "axios"
 
 export const RegisterForm = () => {
+    const { logout } = useContext(AuthContext)
     const [ formData, setFormData ] = useState({
         "username":"",
         "password": "",
@@ -86,10 +87,14 @@ export const RegisterForm = () => {
         
     }, [formData.address.cep])
 
-    return (
-        <form className="flex flex-col w-1/3">
+    useEffect(() => {
+        logout()
+    }, [])
 
-            <div>
+    return (
+        <form className="flex flex-col">
+
+            <div className="m-12 w-[20rem]">
                 <img src={logo} />
             </div>
 
@@ -164,7 +169,6 @@ export const RegisterForm = () => {
                 <span>Já tem uma conta? <Link to='/login' className="text-[#5ca838] font-bold">Faça Login!</Link></span>
             </div>
 
-            {console.log(formData)}
            {
             (!Object.values(formData).includes('')) ? (
                 <button 
@@ -181,14 +185,6 @@ export const RegisterForm = () => {
                 </div>
             )
            }
-
-           {/* <div className="flex items-center justify-center m-2 p-2 text-red-500 italic ">
-            {
-                loginErrorMessages.map((value, index) => {
-                    return <span key={index}>{value}</span>
-                })
-            }
-           </div> */}
            
         </form>
     )
