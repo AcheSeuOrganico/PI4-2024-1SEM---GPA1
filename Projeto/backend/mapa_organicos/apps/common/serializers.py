@@ -9,3 +9,4 @@ class AddressSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=75)
     latitude = serializers.CharField(max_length=25)
     longitude = serializers.CharField(max_length=75)
+    number = serializers.IntegerField()

@@ -11,7 +11,7 @@ export const RegisterOrganizationFields = ({ handleChange, formData }) => {
                     className="w-full mb-2 rounded-md h-10 border-2 p-2 focus:outline-none focus:ring-0" 
                     placeholder="CEP" 
                     type="text"
-                    name="cep"
+                    name="address.cep"
                     onChange={handleChange}/>
             </div>
 
@@ -20,9 +20,9 @@ export const RegisterOrganizationFields = ({ handleChange, formData }) => {
                     className="w-full mb-2 rounded-md h-10 border-2 p-2 focus:outline-none focus:ring-0" 
                     placeholder="Endereço" 
                     type="text"
-                    name="address"
+                    name="address.name"
                     onChange={handleChange}
-                    value={formData.address}
+                    value={formData.address.name}
                     />
             </div>
 
@@ -31,7 +31,7 @@ export const RegisterOrganizationFields = ({ handleChange, formData }) => {
                     className="w-full mb-2 rounded-md h-10 border-2 p-2 focus:outline-none focus:ring-0" 
                     placeholder="Numero" 
                     type="text"
-                    name="number"
+                    name="address.number"
                     onChange={handleChange}/>
             </div>
         </>

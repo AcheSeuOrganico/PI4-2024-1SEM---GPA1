@@ -7,46 +7,74 @@ import { RegisterOrganizationFields } from "./RegisterOrganizationFields"
 import axios from "axios"
 
 export const RegisterForm = () => {
-    const [ userTypeController, setUserTypeController ] = useState('')
     const [ formData, setFormData ] = useState({
-        username:'',
-        password:'',
-        cep: '',
-        address: '',
-        
+        "username":"",
+        "password": "",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "address": {
+            "name":"",
+            "cep":"",
+            "latitude":"",
+            "longitude":"",
+            "number": ""
+            },
+        "user_type": ""
     })
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        
+        axios.post('http://localhost:8002/api/accounts/register/', formData)
+            .then(
+                res => {console.log(res)}
+            ).catch(
+                err => console.log(err)
+            )
     }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev, 
-            [name]: value
-        }));
+        setFormData((prev) => {
+            let keys = name.split('.')
+            if (keys.includes('address')) {
+                return {
+                    ...prev, 
+                    address: {
+                        ...prev.address,
+                        [keys[1]]: value 
+                    }
+                };;
+            }
+            return {
+                ...prev, 
+                [name]: value
+            };
+        });
     }
 
     const handleControllerChange = (e) => {
-        setUserTypeController(e.target.value)
+        setFormData({
+            ...formData,
+            user_type: e.target.value
+        })
     }
 
     useEffect(()=>{
-        if(formData.cep.length === 8){
-            axios.get('https://cep.awesomeapi.com.br/json/'+formData.cep)
+        if(formData.address.cep.length === 8){
+            axios.get('https://cep.awesomeapi.com.br/json/'+formData.address.cep)
                 .then(
                     res => {
                         const data = res.data;
                         console.log(data)
                         setFormData((prev) => ({
                             ...prev, 
-                            ['address']: data.address,
-                            ['latitude']: data.lat,
-                            ['longitude']: data.lng,
-                            ['state']: data.state,
-                            ['district']: data.city 
+                            ['address']: {
+                                ['cep']: data.cep,
+                                ['name']: data.address,
+                                ['latitude']: data.lat,
+                                ['longitude']: data.lng,
+                            } 
                         }));
                     }
                 ).catch(
@@ -56,7 +84,7 @@ export const RegisterForm = () => {
             console.log('CPF Inválido')
         }
         
-    }, [formData.cep])
+    }, [formData.address.cep])
 
     return (
         <form className="flex flex-col w-1/3">
@@ -130,9 +158,7 @@ export const RegisterForm = () => {
                 </select>
            </div>
 
-           {
-                userTypeController === '' || userTypeController === '0' ? '' : <RegisterOrganizationFields handleChange={handleChange} formData={formData}/>
-           }
+           <RegisterOrganizationFields handleChange={handleChange} formData={formData}/>
 
             <div className="flex justify-center text-slate-500">
                 <span>Já tem uma conta? <Link to='/login' className="text-[#5ca838] font-bold">Faça Login!</Link></span>

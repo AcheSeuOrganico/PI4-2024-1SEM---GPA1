@@ -8,6 +8,7 @@ class Address(models.Model):
     cep = models.CharField(max_length=10)
     type = models.CharField(max_length=25)
     name = models.CharField(max_length=100)
+    number = models.IntegerField()
     state = models.CharField(max_length=2)
     district = models.CharField(max_length=100)
     latitude = models.CharField(max_length=25)

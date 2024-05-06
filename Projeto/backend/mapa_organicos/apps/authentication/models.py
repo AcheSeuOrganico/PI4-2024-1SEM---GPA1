@@ -6,11 +6,24 @@ from apps.common.models import Address
 
 class BaseUserManager(BUM):
     def create_user(
-        self, username, email, is_active=True, password=None
+        self, 
+        username, 
+        first_name='', 
+        last_name='',
+        email='',
+        user_type=0,
+        address=None,
+        is_active=True, 
+        password=None
     ):
         user = self.model(
             username=username,
-            is_active=is_active
+            is_active=is_active,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            address=address,
+            user_type=user_type
         )
 
         if password is not None:
