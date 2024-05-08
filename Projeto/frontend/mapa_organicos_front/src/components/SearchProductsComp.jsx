@@ -8,7 +8,6 @@ import axios from "axios"
 export const SearchProductsComp = () => {
     const [ searchInput, setSearchInput ] = useState("")
     const [ organizations, setOrganizations ] = useState([])
-    const [ filteredOrganizations, setFilteredOrganizations ] = useState([])
     const [ appliedFilters, setAppliedFilters ] = useState({})
 
     const handleSearchInputChange = (e) => {
@@ -20,7 +19,6 @@ export const SearchProductsComp = () => {
         axios.get('http://localhost:8002/api/organizations/')
             .then( res => {
                 setOrganizations(res.data)
-                setFilteredOrganizations(res.da)
             })
             .catch( err => {
                 console.log(err)
@@ -29,60 +27,42 @@ export const SearchProductsComp = () => {
 
     const handleFilterSelectboxChange = (e) => {
         setAppliedFilters(prev => {
-            console.log(e.target.value)
             if(e.target.value !== ''){
                 return {
                     ...prev,
                     [e.target.name]: [e.target.value]
                 }
             }
-            delete prev[e.target.name]
+            else{
+                delete prev[e.target.name]
+                if(Object.keys(prev).length === 0){
+                    axios.get('http://localhost:8002/api/organizations/')
+                    .then( res => {
+                        setOrganizations(res.data)
+    
+                    })
+                   .catch( err => {
+                        console.log(err)
+                })
+                }
+            }
             return prev
         })
     }
 
-    const applyFilters = () => {
-        console.log(`>>>> ${Object.keys(appliedFilters).length}`)
-        if(Object.keys(appliedFilters).length === 0){
-            return organizations
-        }
-        return organizations.filter(item => {
-            return Object.entries(appliedFilters).every(([key, value]) => {
-                if(key === 'user_type'){
-                    return item[key]['type_id'] === parseInt(value[0]);
-                }
-                else if(key === 'address'){
-                    return item[key]['address'] === value;
-                }
-                return item[key] === value;
-            });
-        });
-    }
-
-
-    // useEffect(()=>{
-    //     if(Object.keys(appliedFilters).length === 0){
-    //         setFilteredOrganizations(organizations)
-    //     }
-    //     setFilteredOrganizations(organizations.filter(item => {
-    //         return Object.entries(appliedFilters).every(([key, value]) => {
-    //                 if(key === 'user_type'){
-    //                     return item[key]['type_id'] === parseInt(value[0]);
-    //                 }
-    //                 else if(key === 'address'){
-    //                     return item[key]['address'] === value;
-    //                 }
-    //                 return item[key] === value;
-    //             });
-    //         })
-    //     );
-    // }, [appliedFilters])
+    useEffect(() => {
+        axios.get('http://localhost:8002/api/organizations/')
+            .then( res => {
+                setOrganizations(res.data)
+            })
+            .catch( err => {
+                console.log(err)
+            })
+    }, [])
 
     return (
         <div className="">
-            {console.log(appliedFilters)}
-            {console.log(`>>>><<<< ${Object.keys(appliedFilters).length}`)}
-            {console.log(applyFilters())}
+
             <form className="flex flex-col w-[60%] m-auto">
 
                 <div className="flex items-center">
@@ -142,18 +122,28 @@ export const SearchProductsComp = () => {
 
             <div className="my-4 w-[60%] m-auto shadow-md">
 
-                <MapContainer center={[-23.550596020154757, -46.63295405991066]} zoom={13} className="shadow">
+                <MapContainer center={[-23.550596020154757, -46.63295405991066]} zoom={11.5} className="shadow">
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
                     {
-                        applyFilters().map((org) => {
-                            console.log(org)
+                        organizations.filter(item => {
+                            return Object.entries(appliedFilters).every(([key, value]) => {
+                                if(key === 'user_type'){
+                                    return item[key]['type_id'] === parseInt(value[0]);
+                                }
+                                else if(key === 'address'){
+                                    return item[key]['address'] === value[0];
+                                }
+                                return item[key] === value;
+                            });
+                        })?.map((org) => {
                             return (
                                 <Marker 
                                     key={org.id}
                                     position={[org.address.latitude, org.address.longitude]}
+                                    className='text-slate-900'
                                 >
                                     <Popup>
                                         {org.username}
