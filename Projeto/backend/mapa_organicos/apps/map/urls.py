@@ -1,5 +1,7 @@
 from django.urls import path, include
 
-urlpatterns = [
+from apps.map.apis import OrganizationAPIView
 
+urlpatterns = [
+    path('api/organizations/', OrganizationAPIView.as_view(), name='organizations')
 ]

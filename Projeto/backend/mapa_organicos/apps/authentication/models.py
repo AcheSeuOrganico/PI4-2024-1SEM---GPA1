@@ -60,8 +60,8 @@ class UserType(models.Model):
 class User(AbstractUser):
     groups = models.ManyToManyField(Group, related_name='custom_user_groups')
     user_permissions = models.ManyToManyField(Permission, related_name='custom_user_permissions')
-    user_type = models.ForeignKey(UserType, on_delete=models.CASCADE, blank=True, null=True)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=True, null=True)
+    user_type = models.ForeignKey(UserType, on_delete=models.CASCADE, related_name='user_type',blank=True, null=True)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='address', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
