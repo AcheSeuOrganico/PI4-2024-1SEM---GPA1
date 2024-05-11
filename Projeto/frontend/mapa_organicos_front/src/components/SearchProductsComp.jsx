@@ -16,7 +16,7 @@ export const SearchProductsComp = () => {
 
     const handleSearchSubmit = (e) => {
         e.preventDefault()
-        axios.get('http://localhost:8002/api/organizations/')
+        axios.get('http://localhost:8002/api/organizations/?search=' + searchInput)
             .then( res => {
                 setOrganizations(res.data)
             })

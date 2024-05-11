@@ -11,7 +11,7 @@ class BaseUserManager(BUM):
         first_name='', 
         last_name='',
         email='',
-        user_type=0,
+        user_type=None,
         address=None,
         is_active=True, 
         password=None
