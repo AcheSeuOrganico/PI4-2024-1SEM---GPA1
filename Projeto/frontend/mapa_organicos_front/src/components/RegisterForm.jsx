@@ -7,7 +7,7 @@ import { RegisterOrganizationFields } from "./RegisterOrganizationFields"
 import axios from "axios"
 
 export const RegisterForm = () => {
-    const { logout } = useContext(AuthContext)
+    const { logout, login } = useContext(AuthContext)
     const [ formData, setFormData ] = useState({
         "username":"",
         "password": "",
@@ -23,14 +23,29 @@ export const RegisterForm = () => {
             },
         "user_type": ""
     })
+    const [ fieldErrors, setFieldErrors ] = useState({})
 
     const handleSubmit = (e) => {
         e.preventDefault()
         axios.post('http://localhost:8002/api/accounts/register/', formData)
             .then(
-                res => {console.log(res)}
+                res => {
+                    if(res.status === 200){
+                        login({
+                            username: formData.username,
+                            password: formData.password
+                        })
+                    }
+                }
             ).catch(
-                err => console.log(err)
+                err => {
+                    console.log(err)
+                    const { response } = err;
+                    if(response.status === 400){
+                        console.log(response.data)
+                        setFieldErrors(response.data);
+                    }
+                }
             )
     }
 
@@ -99,6 +114,11 @@ export const RegisterForm = () => {
             </div>
 
             <div>
+                <div className={`flex flex-col min-h-5`}>
+                    {fieldErrors.first_name?.map((value, index) => {
+                        return <span className="text-red-400 italic text-sm">{value}</span>
+                    })}
+                </div>
                 <input
                     className="w-full mb-2 rounded-md h-10 border-2 p-2 focus:outline-none focus:ring-0" 
                     placeholder="Nome" 
@@ -108,6 +128,11 @@ export const RegisterForm = () => {
            </div>
 
            <div>
+                <div className={`flex flex-col min-h-5`}>
+                    {fieldErrors.first_name?.map((value, index) => {
+                        return <span className="text-red-400 italic text-sm">{value}</span>
+                    })}
+                </div>
                 <input
                     className="w-full mb-2 rounded-md h-10 border-2 p-2 focus:outline-none focus:ring-0" 
                     placeholder="Sobrenome" 
@@ -117,6 +142,11 @@ export const RegisterForm = () => {
            </div>
 
            <div>
+                <div className={`flex flex-col min-h-5`}>
+                    {fieldErrors.first_name?.map((value, index) => {
+                        return <span className="text-red-400 italic text-sm">{value}</span>
+                    })}
+                </div>
                 <input
                     className="w-full mb-2 rounded-md h-10 border-2 p-2 focus:outline-none focus:ring-0" 
                     placeholder="Usuário" 
@@ -126,6 +156,11 @@ export const RegisterForm = () => {
            </div>
 
            <div>
+                <div className={`flex flex-col min-h-5`}>
+                    {fieldErrors.first_name?.map((value, index) => {
+                        return <span className="text-red-400 italic text-sm">{value}</span>
+                    })}
+                </div>
                 <input
                     className="w-full mb-2 rounded-md h-10 border-2 p-2 focus:outline-none focus:ring-0" 
                     placeholder="Email" 
@@ -135,6 +170,11 @@ export const RegisterForm = () => {
            </div>
 
            <div>
+                <div className={`flex flex-col min-h-5`}>
+                    {fieldErrors.first_name?.map((value, index) => {
+                        return <span className="text-red-400 italic text-sm">{value}</span>
+                    })}
+                </div>
                 <input
                     className="w-full mb-2 rounded-md h-10 border-2 p-2  focus:outline-none focus:ring-0" 
                     placeholder="Password" 
@@ -144,6 +184,11 @@ export const RegisterForm = () => {
            </div>
 
            <div>
+                <div className={`flex flex-col min-h-5`}>
+                    {fieldErrors.first_name?.map((value, index) => {
+                        return <span className="text-red-400 italic text-sm">{value}</span>
+                    })}
+                </div>
                 <input
                     className="w-full mb-2 rounded-md h-10 border-2 p-2 focus:outline-none focus:ring-0" 
                     placeholder="Repeat Password" 
@@ -154,6 +199,11 @@ export const RegisterForm = () => {
            
            <div className="my-4 flex flex-col text-slate-500">
                 <span className="my-2">Como deseja se cadastrar?</span>
+                <div className={`flex flex-col min-h-5`}>
+                    {fieldErrors.first_name?.map((value, index) => {
+                        return <span className="text-red-400 italic text-sm">{value}</span>
+                    })}
+                </div>
                 <select className="my-2 w-1/3 shadow p-2 rounded" onChange={handleControllerChange}>
                     <option></option>
                     <option value='0'>Consumidor</option>
@@ -163,8 +213,8 @@ export const RegisterForm = () => {
                 </select>
            </div>
 
-           <RegisterOrganizationFields handleChange={handleChange} formData={formData}/>
-
+           <RegisterOrganizationFields handleChange={handleChange} formData={formData} fieldErrors={fieldErrors}/>
+           {console.log(formData)}
             <div className="flex justify-center text-slate-500">
                 <span>Já tem uma conta? <Link to='/login' className="text-[#5ca838] font-bold">Faça Login!</Link></span>
             </div>

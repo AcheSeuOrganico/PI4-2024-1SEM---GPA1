@@ -39,6 +39,7 @@ class RegisterUserSerializer(serializers.Serializer):
     
     username = serializers.CharField(max_length=30, validators=[UniqueValidator(queryset=UserModel.objects.all())])
     password = serializers.CharField(max_length=30)
+    password2 = serializers.CharField(max_length=30)
     first_name = serializers.CharField(max_length=50)
     last_name = serializers.CharField(max_length=50)
     email = serializers.EmailField()

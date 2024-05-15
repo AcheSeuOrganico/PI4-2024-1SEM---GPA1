@@ -95,8 +95,8 @@ export const SearchProductsComp = () => {
                         >
                             <option value=""></option>
                             <option value={1}>Produtores</option>
-                            <option value={2}>Comércio</option>
-                            <option value={3}>Feira-orgânica</option>
+                            <option value={2}>Feira-orgânica</option>
+                            <option value={3}>Comércio</option>
                         </select>
                     </div>
 
@@ -153,6 +153,34 @@ export const SearchProductsComp = () => {
                         })
                     }
                 </MapContainer>
+            </div>
+
+            <div className="my-4 w-[60%] m-auto shadow-md">
+                    
+                    <div>
+                    {
+                        organizations.filter(item => {
+                            return Object.entries(appliedFilters).every(([key, value]) => {
+                                if(key === 'user_type'){
+                                    return item[key]['type_id'] === parseInt(value[0]);
+                                }
+                                else if(key === 'address'){
+                                    return item[key]['address'] === value[0];
+                                }
+                                return item[key] === value;
+                            });
+                        })?.map((org) => {
+                            return (
+                                <div>
+                                    Ola
+                                </div>
+                            )
+                        })
+                    }
+                        
+
+                    </div>
+
             </div>
 
         </div>

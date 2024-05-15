@@ -22,9 +22,7 @@ class OrganizationAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         users = User.objects.filter(
-            user_type__type_id__in=[1,2,3],
-            first_name__contains=request.query_params.get('search')
-
+            user_type__type_id__in=[1,2,3]
         ).select_related('address', 'user_type')
         serializer = self.OutputSerializer(data=users, many=True)
         serializer.is_valid()
