@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 
 import { NavBar } from "../components/NavBar"
 import { SearchProductsComp } from "../components/SearchProductsComp"
+import { Footer } from "../components/Footer"
 
 export default function Home(){
     
@@ -15,6 +16,8 @@ export default function Home(){
                 <SearchProductsComp/>
 
             </div>
+
+            <Footer/>
         </>
     )
   }
