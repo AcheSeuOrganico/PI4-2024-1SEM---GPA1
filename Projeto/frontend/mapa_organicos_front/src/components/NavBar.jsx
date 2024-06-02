@@ -5,6 +5,8 @@ import { AuthContext } from '../contexts/AuthContext'
 import { LogoutButton } from './LogoutButton'
 import { Link } from 'react-router-dom'
 
+import { DropdownButton } from './DropdownButton'
+
 
 export const NavBar = () => {
     const { isAuthenticated, logout } = useContext(AuthContext)
@@ -16,7 +18,7 @@ export const NavBar = () => {
             </Link>
 
             {
-                isAuthenticated ? <LogoutButton onClick={() => logout()} /> : <span>Login</span>
+                isAuthenticated ? <DropdownButton /> : <span>Login</span>
             }
         </nav>
     )
