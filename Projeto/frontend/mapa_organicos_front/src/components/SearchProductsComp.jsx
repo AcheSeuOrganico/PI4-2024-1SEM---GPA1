@@ -4,6 +4,8 @@ import "leaflet/dist/leaflet.css"
 import { MapContainer, TileLayer, Marker, Popup  } from 'react-leaflet'
 import axios from "axios"
 
+import { OrgPopup } from "./OrgPopup"
+
 
 export const SearchProductsComp = () => {
     const [ searchInput, setSearchInput ] = useState("")
@@ -138,15 +140,17 @@ export const SearchProductsComp = () => {
                                 }
                                 return item[key] === value;
                             });
-                        })?.map((org) => {
+                        })?.map((orgData) => {
                             return (
                                 <Marker 
-                                    key={org.id}
-                                    position={[org.address.latitude, org.address.longitude]}
+                                    key={orgData.id}
+                                    position={[orgData.address.latitude, orgData.address.longitude]}
                                     className='text-slate-900'
                                 >
                                     <Popup>
-                                        {org.username}
+                                        <OrgPopup
+                                            orgData={orgData}
+                                        />
                                     </Popup>
                                 </Marker>
                             )
