@@ -5,6 +5,7 @@ import { MapContainer, TileLayer, Marker, Popup  } from 'react-leaflet'
 import axios from "axios"
 
 import { OrgPopup } from "./OrgPopup"
+import { OrganizationCard } from "./OrganizationCard"
 
 
 export const SearchProductsComp = () => {
@@ -159,9 +160,13 @@ export const SearchProductsComp = () => {
                 </MapContainer>
             </div>
 
-            <div className="my-4 w-[60%] m-auto shadow-md">
+            <div className="mt-8 w-[60%] m-auto text-2xl text-slate-700">
+                Resultados...
+            </div>
+
+            <div className="my-4 w-[60%] m-auto shadow-md max-h-[40rem] overflow-scroll">
                     
-                    <div>
+                    <div className="p-2">
                     {
                         organizations.filter(item => {
                             return Object.entries(appliedFilters).every(([key, value]) => {
@@ -173,11 +178,11 @@ export const SearchProductsComp = () => {
                                 }
                                 return item[key] === value;
                             });
-                        })?.map((org) => {
+                        })?.map((orgData) => {
                             return (
-                                <div>
-                                    Ola
-                                </div>
+                                <OrganizationCard
+                                    orgData={orgData}
+                                />
                             )
                         })
                     }

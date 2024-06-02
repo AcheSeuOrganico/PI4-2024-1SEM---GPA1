@@ -28,10 +28,10 @@ export const OrgPopup = ({ orgData }) => {
 
                 <FontAwesomeIcon 
                     icon={faArrowRight} 
-                    className='text-white decoration-none no-underline'
+                    className=' decoration-none no-underline'
                 />
 
-                <button className='mx-1 text-white decoration-none no-underline'>Visitar</button>
+                <button className='mx-1  decoration-none no-underline'>Visitar</button>
 
             </Link>
 
