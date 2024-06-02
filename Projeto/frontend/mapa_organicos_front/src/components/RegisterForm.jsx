@@ -8,6 +8,7 @@ import axios from "axios"
 
 export const RegisterForm = () => {
     const { logout, login } = useContext(AuthContext)
+    const [ isOrganization, setIsOrganization ] = useState(false)
     const [ formData, setFormData ] = useState({
         "username":"",
         "password": "",
@@ -74,6 +75,12 @@ export const RegisterForm = () => {
             ...formData,
             user_type: e.target.value
         })
+
+        if(['1', '2', '3'].includes(e.target.value)){
+            setIsOrganization(true)
+        }else{
+            setIsOrganization(false)
+        }
     }
 
     useEffect(()=>{
@@ -211,6 +218,20 @@ export const RegisterForm = () => {
                     <option value='2'>Feira-Orgânica</option>
                     <option value='3'>Comerciante</option>
                 </select>
+           </div>
+
+           <div className={`${isOrganization ? '' : 'hidden'}`}>
+                <div className={`flex flex-col min-h-5`}>
+                    {fieldErrors.fantasy_name?.map((value, index) => {
+                        return <span className="text-red-400 italic text-sm">{value}</span>
+                    })}
+                </div>
+                <input
+                    className="w-full mb-2 rounded-md h-10 border-2 p-2  focus:outline-none focus:ring-0" 
+                    placeholder="Nome fantasia" 
+                    type="text"
+                    name="fantasy_name"
+                    onChange={handleChange}/>
            </div>
 
            <RegisterOrganizationFields handleChange={handleChange} formData={formData} fieldErrors={fieldErrors}/>

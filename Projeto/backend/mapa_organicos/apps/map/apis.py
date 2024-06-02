@@ -15,6 +15,7 @@ class OrganizationAPIView(APIView):
 
     class OutputSerializer(serializers.Serializer):
         id = serializers.IntegerField()
+        fantasy_name = serializers.CharField(max_length=255)
         username = serializers.CharField(max_length=100)
         email = serializers.CharField(max_length=100)
         user_type = UserTypeSerializer()

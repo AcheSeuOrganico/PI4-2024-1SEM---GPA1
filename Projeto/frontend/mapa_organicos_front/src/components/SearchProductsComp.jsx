@@ -118,7 +118,7 @@ export const SearchProductsComp = () => {
 
             </form>
             
-
+            {console.log(organizations)}
 
             <div className="my-4 w-[60%] m-auto shadow-md">
 

@@ -11,6 +11,7 @@ class BaseUserManager(BUM):
         first_name='', 
         last_name='',
         email='',
+        fantasy_name='',
         user_type=None,
         address=None,
         is_active=True, 
@@ -22,6 +23,7 @@ class BaseUserManager(BUM):
             first_name=first_name,
             last_name=last_name,
             email=email,
+            fantasy_name=fantasy_name,
             address=address,
             user_type=user_type
         )
@@ -61,6 +63,7 @@ class User(AbstractUser):
     groups = models.ManyToManyField(Group, related_name='custom_user_groups')
     user_permissions = models.ManyToManyField(Permission, related_name='custom_user_permissions')
     user_type = models.ForeignKey(UserType, on_delete=models.CASCADE, related_name='user_type',blank=True, null=True)
+    fantasy_name = models.CharField(max_length=255, blank=True, null=True)
     address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='address', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -42,6 +42,7 @@ class RegisterUserSerializer(serializers.Serializer):
     password2 = serializers.CharField(max_length=30)
     first_name = serializers.CharField(max_length=50)
     last_name = serializers.CharField(max_length=50)
+    fantasy_name = serializers.CharField(max_length=255, required=False)
     email = serializers.EmailField()
     address = AddressSerializer()
     user_type = serializers.IntegerField()
@@ -62,6 +63,7 @@ class RegisterUserSerializer(serializers.Serializer):
             first_name=self.validated_data['first_name'],
             last_name=self.validated_data['last_name'],
             email=self.validated_data['email'],
+            fantasy_name=self.validated_data['fantasy_name'],
             address=address,
             user_type=user_type
         )
