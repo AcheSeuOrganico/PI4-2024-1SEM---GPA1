@@ -3,7 +3,7 @@ import {faArrowRight} from "@fortawesome/free-solid-svg-icons"
 
 import { Link } from 'react-router-dom'
 
-export const OrgPopup = ({ orgData }) => {
+export const OrgPopup = ({ orgData, visit }) => {
 
     return (
         <div className="">
@@ -21,19 +21,25 @@ export const OrgPopup = ({ orgData }) => {
 
             </div>
 
-            <Link 
-                className='text-white decoration-none no-underline bg-[#C1E3B1] w-16 flex justify-center p-1 rounded items-center border-[#C1E3B1] hover:bg-white hover:text-[#C1E3B1] transition ease-in-out delay-15 duration-800'
-                to={`/organizations/${orgData?.id}`}    
-            >
 
-                <FontAwesomeIcon 
-                    icon={faArrowRight} 
-                    className=' decoration-none no-underline'
-                />
+            {
+                visit ? (
+                    <Link 
+                        className='text-white decoration-none no-underline bg-[#C1E3B1] w-16 flex justify-center p-1 rounded items-center border-[#C1E3B1] hover:bg-white hover:text-[#C1E3B1] transition ease-in-out delay-15 duration-800'
+                        to={`/organizations/${orgData?.id}`}    
+                    >
 
-                <button className='mx-1  decoration-none no-underline'>Visitar</button>
+                        <FontAwesomeIcon 
+                            icon={faArrowRight} 
+                            className=' decoration-none no-underline'
+                        />
+                        
+                        
+                        <button className='mx-1  decoration-none no-underline'>Visitar</button>
 
-            </Link>
+                    </Link>
+                ) : ''
+            }
 
         </div>
     )

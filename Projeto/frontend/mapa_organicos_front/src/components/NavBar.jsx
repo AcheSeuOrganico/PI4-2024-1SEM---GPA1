@@ -3,6 +3,7 @@ import logo from '../assets/img/logo.png'
 import { AuthContext } from '../contexts/AuthContext'
 
 import { LogoutButton } from './LogoutButton'
+import { Link } from 'react-router-dom'
 
 
 export const NavBar = () => {
@@ -10,9 +11,9 @@ export const NavBar = () => {
 
     return (
         <nav className="flex bg-[#C1E3B1] h-26 items-center justify-between px-24 shadow">
-            <div className="m-2 w-[10rem]">
+            <Link className="m-2 w-[10rem]" to="/">
                 <img src={logo} />
-            </div>
+            </Link>
 
             {
                 isAuthenticated ? <LogoutButton onClick={() => logout()} /> : <span>Login</span>

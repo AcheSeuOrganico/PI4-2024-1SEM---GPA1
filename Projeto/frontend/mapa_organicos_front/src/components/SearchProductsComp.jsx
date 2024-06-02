@@ -151,6 +151,7 @@ export const SearchProductsComp = () => {
                                     <Popup>
                                         <OrgPopup
                                             orgData={orgData}
+                                            visit={true}
                                         />
                                     </Popup>
                                 </Marker>

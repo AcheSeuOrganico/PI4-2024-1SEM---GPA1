@@ -8,6 +8,7 @@ export const OrganizationCard =  ({ orgData }) => {
 
     return (
         <div className="flex items-center justify-between border-2 h-28 p-4 rounded my-4">
+            
             <div className='flex items-center justify-center'>
 
                 <Link 
@@ -25,7 +26,7 @@ export const OrganizationCard =  ({ orgData }) => {
                 </Link>
 
                 <div className='mx-2 text-lg text-slate-600 font-medium'>
-                    {orgData?.fantasy_name}
+                    {orgData?.fantasy_name ? orgData.fantasy_name : 'Não informado'}
                 </div>
 
             </div>

@@ -21,6 +21,27 @@ class OrganizationAPIView(APIView):
         user_type = UserTypeSerializer()
         address = AddressSerializer()
 
+    def get(self, request, id,*args, **kwargs):
+        user = User.objects.filter(
+            user_type__type_id__in=[1,2,3],
+            id=id
+        ).select_related('address', 'user_type')
+        serializer = self.OutputSerializer(data=user, many=True)
+        serializer.is_valid()      
+        return Response(status=200, data=serializer.data)
+    
+
+
+class OrganizationsAPIView(APIView):
+
+    class OutputSerializer(serializers.Serializer):
+        id = serializers.IntegerField()
+        fantasy_name = serializers.CharField(max_length=255)
+        username = serializers.CharField(max_length=100)
+        email = serializers.CharField(max_length=100)
+        user_type = UserTypeSerializer()
+        address = AddressSerializer()
+
     def get(self, request, *args, **kwargs):
         users = User.objects.filter(
             user_type__type_id__in=[1,2,3]
