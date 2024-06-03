@@ -17,7 +17,8 @@ export const RegisterOrganizationFields = ({ handleChange, formData, fieldErrors
                     placeholder="CEP" 
                     type="text"
                     name="address.cep"
-                    onChange={handleChange}/>
+                    onChange={handleChange}
+                    value={formData.address.cep }/>
             </div>
 
             <div>
@@ -47,6 +48,7 @@ export const RegisterOrganizationFields = ({ handleChange, formData, fieldErrors
                     placeholder="Numero" 
                     type="text"
                     name="address.number"
+                    value={formData.address.number}
                     onChange={handleChange}/>
             </div>
         </>

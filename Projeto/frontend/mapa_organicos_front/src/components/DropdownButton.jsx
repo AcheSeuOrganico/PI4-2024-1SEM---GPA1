@@ -4,6 +4,7 @@ import { AuthContext } from '../contexts/AuthContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { faMap } from '@fortawesome/free-solid-svg-icons'
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 import { Link } from 'react-router-dom'
@@ -40,9 +41,16 @@ export const DropdownButton = () => {
                         >
                             <Link 
                                 className='m-2 hover:cursor-pointer flex items-center'
+                                to={`/`}
+                                ><FontAwesomeIcon icon={faMap} className='m-2'/>Mapa
+                            </Link>
+
+                            <Link 
+                                className='m-2 hover:cursor-pointer flex items-center'
                                 to={`/profile`}
                                 ><FontAwesomeIcon icon={faUser} className='m-2'/>Perfil
                             </Link>
+                            
                             <div 
                                 className='m-2 hover:cursor-pointer flex items-center'
                                 onClick={logout}

@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { validationMessages } from '../utils/ValidationMessages';
 
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
 
@@ -47,6 +48,15 @@ const AuthProvider = ({children}) => {
         setIsAuthenticated(false);
         return <Navigate to="/login" />;
     }
+
+    useEffect(() => {
+        if(isAuthenticated){
+            const { user_id } = jwtDecode(
+                localStorage.getItem("token")
+            )
+            setUserData({user_id})
+        }
+    }, [isAuthenticated])
 
     const contextData = {
         isAuthenticated,
