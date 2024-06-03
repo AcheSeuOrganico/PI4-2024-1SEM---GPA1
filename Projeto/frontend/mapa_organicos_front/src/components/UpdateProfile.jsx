@@ -2,9 +2,11 @@ import { AuthContext } from "../contexts/AuthContext"
 import { useEffect, useState, useContext } from "react"
 
 import { RegisterOrganizationFields } from "./RegisterOrganizationFields"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons"
 
 import axios from "axios"
-import apiClient from '../api/apiClient'
+
 
 export const UpdateProfile = () => {
     const { userData, setUserData } = useContext(AuthContext)
@@ -25,6 +27,11 @@ export const UpdateProfile = () => {
         "user_type": ""
     })
     const [ fieldErrors, setFieldErrors ] = useState({})
+    const userTypes = [
+        {id:1, name:"Produtor"},
+        {id:2, name:"Feira-Orgânica"},
+        {id:3, name:"Comerciante"},
+    ]
 
     useEffect(() => {
         if(userData?.user_id){
@@ -67,9 +74,9 @@ export const UpdateProfile = () => {
 
     return (
         <div className="flex flex-col w-[60%] m-auto">
-            <form className="flex border-2 border-slate-300 shadow mb-5 mt-10 p-4 rounded-md">  
-            
-                <div className="flex flex-col my-4 w-[50%] m-auto shadow-md p-4">
+
+            <form className="flex border-2 flex-wrap border-slate-300 shadow min-w-[700px] mb-5 mt-10 p-4 rounded-md">            
+                <div className="flex flex-col my-4 w-[50%] min-w-[650px] m-auto shadow-md p-4">
                     {console.log(formData)}
                     <div>
                         <div className={`flex flex-col min-h-5`}>
@@ -128,9 +135,15 @@ export const UpdateProfile = () => {
                         </div>
                         <select className="my-2 w-1/3 shadow p-2 rounded" onChange={handleControllerChange}>
                             <option></option>
-                            <option value='1'>Produtor</option>
-                            <option value='2'>Feira-Orgânica</option>
-                            <option value='3'>Comerciante</option>
+                            {
+                                userTypes.map((value, _) => {
+                                    if(value?.id === formData.user_type.type_id){
+                                        return <option value={`${value?.id}`} selected>{value?.name}</option>
+                                    }else{
+                                        return <option value={`${value?.id}`}>{value?.name}</option>
+                                    }
+                                })
+                            }
                         </select>
                     </div>
 
@@ -154,33 +167,64 @@ export const UpdateProfile = () => {
 
                 </div>
 
-                <div className="my-4 w-[50%] m-auto shadow-md">
+                <div className="my-4 w-[50%] m-auto shadow-md p-8 relative">
 
-                    {selectedImage && (
-                        <div>
-                        <img
-                            alt="not found"
-                            width={"250px"}
-                            src={URL.createObjectURL(selectedImage)}
+                    <div className="my-2">
+                            {selectedImage && (
+                                <>
+                                    <span>Imagem atual:</span>
+                                    <div>
+                                        <img
+                                            alt="Image not found"
+                                            width={"100%"}
+                                            src={URL.createObjectURL(selectedImage)}
+                                        />
+                                        <button 
+                                            onClick={() => setSelectedImage(null)}
+                                            className="my-1 underline"    
+                                        >Remover</button>
+                                    </div>
+                                </>
+                            )}
+                    </div>
+
+                    <div className="w-full h-[300px] border-2 rounded-md relative hover:cursor-pointer">
+                        
+                        <input
+                            type="file"
+                            name="myImage"
+                            className="absolute h-full w-full opacity-0 hover:cursor-pointer"
+                            onChange={(event) => {
+                                console.log(event.target.files[0]);
+                                setSelectedImage(event.target.files[0]); 
+                            }}
                         />
-                        <br /> <br />
-                        <button onClick={() => setSelectedImage(null)}>Remove</button>
+                        
+                        <div className="w-full h-full flex flex-col justify-center items-center text-slate-600 hover:cursor-pointer">
+
+                            <FontAwesomeIcon icon={faCloudArrowUp} className="text-6xl"/>
+
+                            <span>Escolha uma imagem de perfil</span>
+
                         </div>
-                    )}
+                    </div>
 
-                    <br />
-
-                    <input
-                        type="file"
-                        name="myImage"
-                        onChange={(event) => {
-                        console.log(event.target.files[0]);
-                        setSelectedImage(event.target.files[0]); 
-                        }}
-                    />
+                    <div className="flex flex-col my-4">
+                        <span>Descrição:</span>
+                        <textarea 
+                            type="textarea"
+                            placeholder="Deixe uma descrição do seu estabelecimento..."
+                        />
+                    </div>
                 </div>
 
             </form>
+
+            <div className="px-4">
+                <button
+                    className="border-2 p-2 rounded-lg bg-[#C1E3B1] border-[#C1E3B1] text-white hover:bg-white hover:text-[#C1E3B1]"
+                >Submit</button>
+            </div>
         </div>
     )
   }
