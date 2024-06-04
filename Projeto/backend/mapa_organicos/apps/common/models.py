@@ -9,6 +9,7 @@ class Address(models.Model):
     type = models.CharField(max_length=25)
     name = models.CharField(max_length=100)
     number = models.IntegerField()
+    city = models.CharField(max_length=255, blank=True, null=True)
     state = models.CharField(max_length=2)
     district = models.CharField(max_length=100)
     latitude = models.CharField(max_length=25)

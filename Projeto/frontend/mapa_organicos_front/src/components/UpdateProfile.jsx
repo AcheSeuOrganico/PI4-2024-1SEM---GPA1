@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons"
 
 import axios from "axios"
+import apiClient from "../api/apiClient"
 
 
 export const UpdateProfile = () => {
@@ -32,18 +33,6 @@ export const UpdateProfile = () => {
         {id:2, name:"Feira-Orgânica"},
         {id:3, name:"Comerciante"},
     ]
-
-    useEffect(() => {
-        if(userData?.user_id){
-            axios.get('http://localhost:8002/api/organizations/' + userData.user_id)
-            .then( res => {
-                setFormData(res?.data[0])
-            })
-            .catch( err => {
-                // navigate("/")
-            })
-        }
-    }, [])
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -72,12 +61,82 @@ export const UpdateProfile = () => {
         })
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        apiClient().post(
+            'http://localhost:8002/api/auth/update/', formData)
+        .then( res => {
+            console.log(res)
+        })
+        .catch(
+            err => {
+                console.log(err)
+                const { response } = err;
+                if(response.status === 400){
+                    console.log(response.data)
+                    setFieldErrors(response.data);
+                }
+            }
+        )
+    }
+
+    useEffect(() => {
+        if(userData?.user_id){
+            axios.get('http://localhost:8002/api/organizations/' + userData.user_id)
+            .then( res => {
+                setFormData(res?.data[0])
+            })
+            .catch( err => {
+                // navigate("/")
+            })
+        }
+    }, [])
+
+    useEffect(() => {
+        if(selectedImage){
+            setFormData(prev => ({...prev, img: selectedImage}))
+        }
+    }, [selectedImage])
+
+    useEffect(()=>{
+        if(formData.address.cep.length === 8){
+            axios.get('https://cep.awesomeapi.com.br/json/'+formData.address.cep)
+                .then(
+                    res => {
+                        const data = res.data;
+                        console.log(data)
+                        setFormData((prev) => ({
+                            ...prev, 
+                            ['address']: {
+                                ['cep']: data.cep,
+                                ['name']: data.address,
+                                ['latitude']: data.lat,
+                                ['longitude']: data.lng,
+                            } 
+                        }));
+                    }
+                ).catch(
+                    err => console.log(err)
+                )
+        }else{
+            setFormData((prev) => ({
+                ...prev, 
+                ['address']: {
+                    ...prev.address,
+                    ['name']: '',
+                    ['number']: ''
+                } 
+            }));
+        }
+        
+    }, [formData.address.cep])
+
     return (
         <div className="flex flex-col w-[60%] m-auto">
 
             <form className="flex border-2 flex-wrap border-slate-300 shadow min-w-[700px] mb-5 mt-10 p-4 rounded-md">            
                 <div className="flex flex-col my-4 w-[50%] min-w-[650px] m-auto shadow-md p-4">
-                    {console.log(formData)}
+
                     <div>
                         <div className={`flex flex-col min-h-5`}>
                             {fieldErrors.first_name?.map((value, index) => {
@@ -188,19 +247,18 @@ export const UpdateProfile = () => {
                             )}
                     </div>
 
-                    <div className="w-full h-[300px] border-2 rounded-md relative hover:cursor-pointer">
+                    <div className="w-full h-[300px] border-2 border-dashed rounded-md relative hover:cursor-pointer">
                         
                         <input
                             type="file"
                             name="myImage"
                             className="absolute h-full w-full opacity-0 hover:cursor-pointer"
                             onChange={(event) => {
-                                console.log(event.target.files[0]);
                                 setSelectedImage(event.target.files[0]); 
                             }}
                         />
                         
-                        <div className="w-full h-full flex flex-col justify-center items-center text-slate-600 hover:cursor-pointer">
+                        <div className="w-full h-full flex flex-col border-dashed justify-center items-center text-slate-600 hover:cursor-pointer">
 
                             <FontAwesomeIcon icon={faCloudArrowUp} className="text-6xl"/>
 
@@ -211,9 +269,12 @@ export const UpdateProfile = () => {
 
                     <div className="flex flex-col my-4">
                         <span>Descrição:</span>
-                        <textarea 
+                        <textarea
+                            name="description"
                             type="textarea"
                             placeholder="Deixe uma descrição do seu estabelecimento..."
+                            value={formData?.description}
+                            onChange={handleChange}
                         />
                     </div>
                 </div>
@@ -223,7 +284,8 @@ export const UpdateProfile = () => {
             <div className="px-4">
                 <button
                     className="border-2 p-2 rounded-lg bg-[#C1E3B1] border-[#C1E3B1] text-white hover:bg-white hover:text-[#C1E3B1]"
-                >Submit</button>
+                    onClick={handleSubmit}
+                >Atualizar</button>
             </div>
         </div>
     )

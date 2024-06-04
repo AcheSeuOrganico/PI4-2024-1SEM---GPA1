@@ -5,7 +5,8 @@ from .apis import (
     UserRefreshApi, 
     UserVerifyApi, 
     UserMeApi,
-    RegisterUserApi
+    RegisterUserApi,
+    UpdateUserApi
 )
 
 
@@ -14,6 +15,7 @@ urlpatterns = [
     path("api/auth/refresh/", UserRefreshApi.as_view(), name="refresh"),
     path("api/auth/verify/", UserVerifyApi.as_view(), name="verify"),
     path("api/auth/me/", UserMeApi.as_view(), name="me"),
+    path("api/auth/update/", UpdateUserApi.as_view(), name="me"),
     path("api/accounts/register/", RegisterUserApi.as_view(), name="register")
 ]
 

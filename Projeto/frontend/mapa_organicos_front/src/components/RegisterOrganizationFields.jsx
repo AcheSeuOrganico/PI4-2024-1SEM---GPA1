@@ -8,7 +8,7 @@ export const RegisterOrganizationFields = ({ handleChange, formData, fieldErrors
         <>
             <div>
                 <div className={`flex flex-col min-h-5`}>
-                    {fieldErrors.first_name?.map((value, index) => {
+                    {fieldErrors?.address?.cep?.map((value, index) => {
                         return <span className="text-red-400 italic text-sm">{value}</span>
                     })}
                 </div>
@@ -23,7 +23,7 @@ export const RegisterOrganizationFields = ({ handleChange, formData, fieldErrors
 
             <div>
                 <div className={`flex flex-col min-h-5`}>
-                    {fieldErrors.first_name?.map((value, index) => {
+                    {fieldErrors?.address?.name?.map((value, index) => {
                         return <span className="text-red-400 italic text-sm">{value}</span>
                     })}
                 </div>
@@ -34,12 +34,13 @@ export const RegisterOrganizationFields = ({ handleChange, formData, fieldErrors
                     name="address.name"
                     onChange={handleChange}
                     value={formData.address.name}
+                    disabled
                     />
             </div>
 
             <div>
                 <div className={`flex flex-col min-h-5`}>
-                    {fieldErrors.first_name?.map((value, index) => {
+                    {fieldErrors?.address?.number?.map((value, index) => {
                         return <span className="text-red-400 italic text-sm">{value}</span>
                     })}
                 </div>

@@ -22,6 +22,7 @@ class OrganizationAPIView(APIView):
         email = serializers.CharField(max_length=100)
         user_type = UserTypeSerializer()
         address = AddressSerializer()
+        description = serializers.CharField(max_length=255)
 
     def get(self, request, id,*args, **kwargs):
         user = User.objects.filter(

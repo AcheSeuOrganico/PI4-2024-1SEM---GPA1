@@ -12,8 +12,13 @@ from rest_framework_simplejwt.views import (
 from django.contrib.auth.models import User
 
 from apps.common.mixins import ApiAuthMixin
+from apps.authentication.services import update_user
 from apps.authentication.serializers import (
-    RegisterUserSerializer
+    RegisterUserSerializer,
+    UserTypeSerializer
+)
+from apps.common.serializers import (
+    AddressSerializer
 )
 
 class UserLoginApi(TokenObtainPairView):
@@ -55,4 +60,28 @@ class RegisterUserApi(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(data=serializer.data)
+        return Response(status=400, data=serializer.errors)
+    
+
+class UpdateUserApi(ApiAuthMixin, APIView):
+
+    class UpdateUserSerializer(serializers.Serializer):
+        first_name = serializers.CharField(max_length=255)
+        last_name = serializers.CharField(max_length=255)
+        email = serializers.EmailField()
+        fantasy_name = serializers.CharField(max_length=255)
+        user_type = serializers.CharField(max_length=2)
+        address = AddressSerializer()
+        description = serializers.CharField(max_length=510, allow_null=True, required=False)
+
+    def post(self, request):
+        serializer = self.UpdateUserSerializer(data=request.data)
+        print(request.data)
+        if serializer.is_valid():
+            user_type_data = serializer.validated_data.pop('user_type', None)
+            address_data = serializer.validated_data.pop('address', None)
+            
+            update_user(request.user.id, serializer.validated_data, user_type_data, address_data)
+            return Response(status=200, data=serializer.data)
+        print(serializer.errors)
         return Response(status=400, data=serializer.errors)
