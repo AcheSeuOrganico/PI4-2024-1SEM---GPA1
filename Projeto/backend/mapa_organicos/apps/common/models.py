@@ -17,3 +17,9 @@ class Address(models.Model):
 
     def __str__(self):
         return f"{self.cep}"
+    
+
+class Products(models.Model):
+    product_id = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    icon = models.CharField(max_length=255, null=True, blank=True)

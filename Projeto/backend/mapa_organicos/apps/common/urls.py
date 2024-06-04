@@ -1,5 +1,7 @@
 from django.urls import path, include
 
-urlpatterns = [
+from apps.common.apis import ProductsAPIView 
 
+urlpatterns = [
+    path("api/products/", ProductsAPIView.as_view(), name="me"),
 ]

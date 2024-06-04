@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import Group, Permission, AbstractUser, BaseUserManager as BUM
 
-from apps.common.models import Address
+from apps.common.models import Address, Products
 
 
 class BaseUserManager(BUM):
@@ -70,5 +70,6 @@ class User(AbstractUser):
     address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='address', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    products = models.ManyToManyField(Products, null=True, blank=True)
 
     objects = BaseUserManager()
