@@ -83,6 +83,16 @@ export const OrganizationProfile = () => {
                             </div>
 
                             <div className="flex flex-col h-20">
+                                <span className="text-lg font-medium">Estado</span>
+                                <span>{orgData?.address?.state}</span>
+                            </div>
+
+                            <div className="flex flex-col h-20">
+                                <span className="text-lg font-medium">Cidade</span>
+                                <span>{orgData?.address?.city}</span>
+                            </div>
+
+                            <div className="flex flex-col h-20">
                                 <span className="text-lg font-medium">Rua</span>
                                 <span>{orgData?.address?.name}</span>
                             </div>

@@ -60,6 +60,7 @@ class RegisterUserApi(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(data=serializer.data)
+        print(serializer.errors)
         return Response(status=400, data=serializer.errors)
     
 
@@ -72,7 +73,7 @@ class UpdateUserApi(ApiAuthMixin, APIView):
         fantasy_name = serializers.CharField(max_length=255)
         user_type = serializers.CharField(max_length=2)
         address = AddressSerializer()
-        description = serializers.CharField(max_length=510, allow_null=True, required=False)
+        description = serializers.CharField(max_length=510, allow_null=True, allow_blank=True, required=False)
 
     def post(self, request):
         serializer = self.UpdateUserSerializer(data=request.data)

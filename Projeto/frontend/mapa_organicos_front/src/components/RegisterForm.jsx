@@ -95,6 +95,8 @@ export const RegisterForm = () => {
                             ['address']: {
                                 ['cep']: data.cep,
                                 ['name']: data.address,
+                                ['state']: data.state,
+                                ['city']: data.city,
                                 ['latitude']: data.lat,
                                 ['longitude']: data.lng,
                             } 
@@ -104,7 +106,16 @@ export const RegisterForm = () => {
                     err => console.log(err)
                 )
         }else{
-            console.log('CPF Inválido')
+            setFormData((prev) => ({
+                ...prev, 
+                ['address']: {
+                    ...prev.address,
+                    ['name']: '',
+                    ['number']: '',
+                    ['state']: '',
+                    ['city']: '',
+                } 
+            }));
         }
         
     }, [formData.address.cep])

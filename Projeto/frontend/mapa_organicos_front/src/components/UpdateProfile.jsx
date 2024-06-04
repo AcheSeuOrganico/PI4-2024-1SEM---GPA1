@@ -110,6 +110,8 @@ export const UpdateProfile = () => {
                             ['address']: {
                                 ['cep']: data.cep,
                                 ['name']: data.address,
+                                ['state']: data.state,
+                                ['city']: data.city,
                                 ['latitude']: data.lat,
                                 ['longitude']: data.lng,
                             } 
@@ -124,7 +126,9 @@ export const UpdateProfile = () => {
                 ['address']: {
                     ...prev.address,
                     ['name']: '',
-                    ['number']: ''
+                    ['number']: '',
+                    ['state']: '',
+                    ['city']: '',
                 } 
             }));
         }

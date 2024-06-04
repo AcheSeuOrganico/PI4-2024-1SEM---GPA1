@@ -51,6 +51,8 @@ class RegisterUserSerializer(serializers.Serializer):
         address = create_address(
             cep=self.validated_data['address']['cep'],
             name=self.validated_data['address']['name'],
+            city=self.validated_data['address']['city'],
+            state=self.validated_data['address']['state'],
             latitude=self.validated_data['address']['latitude'],
             longitude=self.validated_data['address']['longitude'],
             number=self.validated_data['address']['number']

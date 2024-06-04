@@ -38,7 +38,8 @@ export const OrganizationCard =  ({ orgData }) => {
                 </div>
 
                 <div className='text-slate-600 italic mx-2'>
-                    {orgData?.address?.name}, {orgData?.address?.number}.
+                    {orgData?.address?.name && `${orgData?.address?.name}, `}
+                    {orgData?.address?.number}. {orgData?.address?.city}, {orgData?.address?.state}.
                 </div>
 
             </div>
