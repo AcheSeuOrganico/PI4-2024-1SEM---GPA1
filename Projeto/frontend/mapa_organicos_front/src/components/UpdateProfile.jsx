@@ -8,10 +8,13 @@ import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons"
 import axios from "axios"
 import apiClient from "../api/apiClient"
 
+import { Icon } from "./Icon"
+
 
 export const UpdateProfile = () => {
     const { userData, setUserData } = useContext(AuthContext)
     const [selectedImage, setSelectedImage] = useState(null);
+    const [products, setProducts] = useState()
     const [ formData, setFormData ] = useState({
         "username":"",
         "password": "",
@@ -25,7 +28,8 @@ export const UpdateProfile = () => {
             "longitude":"",
             "number": ""
             },
-        "user_type": ""
+        "user_type": "",
+        "products": []
     })
     const [ fieldErrors, setFieldErrors ] = useState({})
     const userTypes = [
@@ -61,6 +65,24 @@ export const UpdateProfile = () => {
         })
     }
 
+    // Function to handle change event of checkboxes
+    const handleProductChange = (event) => {
+        const selectedProduct = event.target.value;
+        let updatedProducts;
+        if (event.target.checked) {
+        // If checkbox is checked, add the product to the products array
+        updatedProducts = [...formData.products, selectedProduct];
+        } else {
+        // If checkbox is unchecked, remove the product from the products array
+        updatedProducts = formData.products.filter(product => product !== selectedProduct);
+        }
+        // Update formData state with the updated products array
+        setFormData(prevState => ({
+        ...prevState,
+        products: updatedProducts
+        }));
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault()
         apiClient().post(
@@ -85,6 +107,23 @@ export const UpdateProfile = () => {
             axios.get('http://localhost:8002/api/organizations/' + userData.user_id)
             .then( res => {
                 setFormData(res?.data[0])
+                setFormData(prevState => ({
+                    ...prevState,
+                    products: prevState.products.map(product => product.product_id)
+                  }));
+            })
+            .catch( err => {
+                // navigate("/")
+            })
+        }
+    }, [])
+
+    useEffect(() => {
+        if(userData?.user_id){
+            axios.get('http://localhost:8002/api/products')
+            .then( res => {
+                console.log(res?.data)
+                setProducts(res?.data)
             })
             .catch( err => {
                 // navigate("/")
@@ -208,6 +247,25 @@ export const UpdateProfile = () => {
                                 })
                             }
                         </select>
+                    </div>
+                    {console.log(formData)}
+                    <div className="my-4 flex justify-around text-slate-500">
+                        {
+                            products?.map((value, index) => (
+                            <label key={index} className="flex flex-col">
+                                <input 
+                                type="checkbox" 
+                                name="products" 
+                                value={value.product_id} 
+                                className="m-1" 
+                                onChange={handleProductChange} 
+                                checked={formData.products.includes(value.product_id)}
+                                />
+                                <Icon className="m-1" iconId={value.product_id} />
+                                <span className="m-1">{value.name}</span>
+                            </label>
+                            ))
+                        }
                     </div>
 
                     <div>

@@ -1,6 +1,6 @@
 
 from apps.authentication.models import User, UserType
-from apps.common.models import Address  
+from apps.common.models import Address , Products
 from apps.common.serializers import AddressSerializer  
 
 
@@ -12,6 +12,10 @@ def update_user(id, data):
     user.email = data.get('email')
     user.description = data.get('description')
     user.fantasy_name = data.get('fantasy_name')
+
+    if products := data.get('products'):
+        products = [Products.objects.get(product_id=i) for i in products]
+        user.products.set(products)
     
     data = data.get('address')
     address_data = {
@@ -29,7 +33,7 @@ def update_user(id, data):
         address_instance = address_serializer.save()
         user.address = address_instance
     else:
-        # Handle serializer errors if needed
         pass
+
     
     user.save()
