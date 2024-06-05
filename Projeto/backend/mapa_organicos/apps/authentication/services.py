@@ -1,8 +1,9 @@
-
+import base64
+import uuid
 from apps.authentication.models import User, UserType
 from apps.common.models import Address , Products
 from apps.common.serializers import AddressSerializer  
-
+from django.core.files.base import ContentFile
 
 def update_user(id, data):
     user = User.objects.get(id=id)
@@ -16,6 +17,10 @@ def update_user(id, data):
     if products := data.get('products'):
         products = [Products.objects.get(product_id=i) for i in products]
         user.products.set(products)
+
+    if img := data.get('img'):
+        file = ContentFile(base64.b64decode(img), name=f'{user.username}_{uuid.uuid4()}.png')
+        user.img = file
     
     data = data.get('address')
     address_data = {

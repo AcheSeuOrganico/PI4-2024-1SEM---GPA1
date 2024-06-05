@@ -2,7 +2,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import (
     serializers
 )
-
+import base64
 
 from apps.common.models import Products, Address
 from apps.common.services import create_address
@@ -28,13 +28,17 @@ class AddressSerializer(serializers.Serializer):
         )
 
 
+class Base64StringField(serializers.Field):
+    def to_representation(self, value):
+        if value is None:
+            return value
+        return base64.b64encode(value).decode('utf-8')
 
-# class ProductSerializer(serializers.Serializer):
-#     id = serializers.IntegerField()
-#     product_id = serializers.CharField(max_length=255)
-#     name = serializers.CharField(max_length=255)
-#     icon = serializers.CharField(max_length=255)
-
+    def to_internal_value(self, data):
+        try:
+            return base64.b64decode(data)
+        except TypeError:
+            self.fail('invalid')
 
 class ProductSerializer(serializers.ModelSerializer):  # Use ModelSerializer for related models
     class Meta:

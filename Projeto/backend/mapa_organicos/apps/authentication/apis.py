@@ -19,7 +19,8 @@ from apps.authentication.serializers import (
 )
 from apps.common.serializers import (
     AddressSerializer,
-    ProductSerializer
+    ProductSerializer,
+    Base64StringField
 )
 
 class UserLoginApi(TokenObtainPairView):
@@ -75,10 +76,12 @@ class UpdateUserApi(ApiAuthMixin, APIView):
         address = AddressSerializer()
         description = serializers.CharField(max_length=1024, allow_null=True, allow_blank=True, required=False)
         products = serializers.ListField(child=serializers.CharField())
+        img = Base64StringField()
 
     def post(self, request):
         serializer = self.UpdateUserSerializer(data=request.data)
         if serializer.is_valid():
             update_user(request.user.id, serializer.validated_data)
             return Response(status=200, data=serializer.data)
+        print(serializer.errors)
         return Response(status=400, data=serializer.errors)

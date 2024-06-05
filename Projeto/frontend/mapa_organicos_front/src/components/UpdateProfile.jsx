@@ -65,18 +65,14 @@ export const UpdateProfile = () => {
         })
     }
 
-    // Function to handle change event of checkboxes
     const handleProductChange = (event) => {
         const selectedProduct = event.target.value;
         let updatedProducts;
         if (event.target.checked) {
-        // If checkbox is checked, add the product to the products array
         updatedProducts = [...formData.products, selectedProduct];
         } else {
-        // If checkbox is unchecked, remove the product from the products array
         updatedProducts = formData.products.filter(product => product !== selectedProduct);
         }
-        // Update formData state with the updated products array
         setFormData(prevState => ({
         ...prevState,
         products: updatedProducts
@@ -133,7 +129,13 @@ export const UpdateProfile = () => {
 
     useEffect(() => {
         if(selectedImage){
-            setFormData(prev => ({...prev, img: selectedImage}))
+            const reader = new FileReader();
+
+            reader.onloadend = () => {
+
+                setFormData(prev => ({...prev, img: reader.result}))
+              };
+            reader.readAsDataURL(selectedImage);
         }
     }, [selectedImage])
 
@@ -176,7 +178,7 @@ export const UpdateProfile = () => {
 
     return (
         <div className="flex flex-col w-[60%] m-auto">
-
+            {console.log(formData)}
             <form className="flex border-2 flex-wrap border-slate-300 shadow min-w-[700px] mb-5 mt-10 p-4 rounded-md">            
                 <div className="flex flex-col my-4 w-[50%] min-w-[650px] m-auto shadow-md p-4">
 
@@ -316,6 +318,7 @@ export const UpdateProfile = () => {
                             name="myImage"
                             className="absolute h-full w-full opacity-0 hover:cursor-pointer"
                             onChange={(event) => {
+                                console.log(event.target.files)
                                 setSelectedImage(event.target.files[0]); 
                             }}
                         />

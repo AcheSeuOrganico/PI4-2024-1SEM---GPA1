@@ -17,7 +17,8 @@ class BaseUserManager(BUM):
         address=None,
         is_active=True, 
         password=None,
-        products=[]
+        products=[],
+        img=None
     ):
         user: User = self.model(
             username=username,
@@ -28,7 +29,8 @@ class BaseUserManager(BUM):
             email=email,
             fantasy_name=fantasy_name,
             address=address,
-            user_type=user_type
+            user_type=user_type,
+            img=img
         )
 
         if password is not None:
@@ -75,5 +77,6 @@ class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     products = models.ManyToManyField(Products, null=True, blank=True)
+    img = models.ImageField(upload_to='images/', default=None, blank=True, null=True)
 
     objects = BaseUserManager()

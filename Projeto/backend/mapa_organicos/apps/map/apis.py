@@ -20,7 +20,7 @@ class OrganizationAPIView(APIView):
 
         class Meta:
             model = User
-            fields = ['id', 'first_name', 'last_name', 'description', 'fantasy_name', 'username', 'email', 'user_type', 'address', 'products']
+            fields = ['id', 'first_name', 'last_name', 'description', 'fantasy_name', 'username', 'email', 'user_type', 'address', 'products', 'img']
 
     def get(self, request, id, *args, **kwargs):
         user = User.objects.filter(
@@ -41,7 +41,7 @@ class OrganizationsAPIView(APIView):
 
         class Meta:
             model = User
-            fields = ['id', 'fantasy_name', 'username', 'email', 'user_type', 'address', 'products']
+            fields = ['id', 'fantasy_name', 'username', 'email', 'user_type', 'address', 'products', 'img']
 
     def get(self, request, *args, **kwargs):
         users = User.objects.filter(user_type__type_id__in=[1,2,3]).select_related('address', 'user_type')
