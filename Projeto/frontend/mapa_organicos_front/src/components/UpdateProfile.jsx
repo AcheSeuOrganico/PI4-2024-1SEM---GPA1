@@ -9,9 +9,10 @@ import axios from "axios"
 import apiClient from "../api/apiClient"
 
 import { Icon } from "./Icon"
-
+import { useToast } from "../hooks/useToast"
 
 export const UpdateProfile = () => {
+    const { toast } = useToast()
     const { userData, setUserData } = useContext(AuthContext)
     const [selectedImage, setSelectedImage] = useState(null);
     const [products, setProducts] = useState()
@@ -84,7 +85,7 @@ export const UpdateProfile = () => {
         apiClient().post(
             'http://localhost:8002/api/auth/update/', formData)
         .then( res => {
-            console.log(res)
+            toast("Usuário atualizado com sucesso")
         })
         .catch(
             err => {
@@ -94,6 +95,7 @@ export const UpdateProfile = () => {
                     console.log(response.data)
                     setFieldErrors(response.data);
                 }
+                toast("Não foi possível atualizar o usuário")
             }
         )
     }
