@@ -6,49 +6,44 @@ from rest_framework.response import Response
 
 from apps.authentication.models import User
 from apps.authentication.serializers import UserTypeSerializer
-from apps.common.serializers import AddressSerializer
+from apps.common.serializers import AddressSerializer, ProductSerializer
+from apps.common.models import Products
 
 # Create your views here.
 
 
 class OrganizationAPIView(APIView):
-
-    class OutputSerializer(serializers.Serializer):
-        id = serializers.IntegerField()
-        first_name = serializers.CharField(max_length=255)
-        last_name = serializers.CharField(max_length=255)
-        fantasy_name = serializers.CharField(max_length=255)
-        username = serializers.CharField(max_length=100)
-        email = serializers.CharField(max_length=100)
+    class OutputSerializer(serializers.ModelSerializer):
         user_type = UserTypeSerializer()
         address = AddressSerializer()
-        description = serializers.CharField(max_length=255)
+        products = ProductSerializer(many=True) 
 
-    def get(self, request, id,*args, **kwargs):
+        class Meta:
+            model = User
+            fields = ['id', 'first_name', 'last_name', 'description', 'fantasy_name', 'username', 'email', 'user_type', 'address', 'products']
+
+    def get(self, request, id, *args, **kwargs):
         user = User.objects.filter(
             user_type__type_id__in=[1,2,3],
             id=id
         ).select_related('address', 'user_type')
-        serializer = self.OutputSerializer(data=user, many=True)
-        serializer.is_valid()      
+        serializer = self.OutputSerializer(user, many=True) 
         return Response(status=200, data=serializer.data)
     
 
 
-class OrganizationsAPIView(APIView):
 
-    class OutputSerializer(serializers.Serializer):
-        id = serializers.IntegerField()
-        fantasy_name = serializers.CharField(max_length=255)
-        username = serializers.CharField(max_length=100)
-        email = serializers.CharField(max_length=100)
+class OrganizationsAPIView(APIView):
+    class OutputSerializer(serializers.ModelSerializer):
         user_type = UserTypeSerializer()
         address = AddressSerializer()
+        products = ProductSerializer(many=True) 
+
+        class Meta:
+            model = User
+            fields = ['id', 'fantasy_name', 'username', 'email', 'user_type', 'address', 'products']
 
     def get(self, request, *args, **kwargs):
-        users = User.objects.filter(
-            user_type__type_id__in=[1,2,3]
-        ).select_related('address', 'user_type')
-        serializer = self.OutputSerializer(data=users, many=True)
-        serializer.is_valid()
+        users = User.objects.filter(user_type__type_id__in=[1,2,3]).select_related('address', 'user_type')
+        serializer = self.OutputSerializer(users, many=True) 
         return Response(status=200, data=serializer.data)

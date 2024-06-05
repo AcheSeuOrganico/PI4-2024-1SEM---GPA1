@@ -18,7 +18,8 @@ from apps.authentication.serializers import (
     UserTypeSerializer
 )
 from apps.common.serializers import (
-    AddressSerializer
+    AddressSerializer,
+    ProductSerializer
 )
 
 class UserLoginApi(TokenObtainPairView):
@@ -71,18 +72,16 @@ class UpdateUserApi(ApiAuthMixin, APIView):
         last_name = serializers.CharField(max_length=255)
         email = serializers.EmailField()
         fantasy_name = serializers.CharField(max_length=255)
-        user_type = serializers.CharField(max_length=2)
         address = AddressSerializer()
-        description = serializers.CharField(max_length=510, allow_null=True, allow_blank=True, required=False)
+        description = serializers.CharField(max_length=1024, allow_null=True, allow_blank=True, required=False)
+        products = ProductSerializer(allow_null=True, required=False, many=True)
+
 
     def post(self, request):
         serializer = self.UpdateUserSerializer(data=request.data)
         print(request.data)
         if serializer.is_valid():
-            user_type_data = serializer.validated_data.pop('user_type', None)
-            address_data = serializer.validated_data.pop('address', None)
-            
-            update_user(request.user.id, serializer.validated_data, user_type_data, address_data)
+            update_user(request.user.id, serializer.validated_data)
             return Response(status=200, data=serializer.data)
         print(serializer.errors)
         return Response(status=400, data=serializer.errors)

@@ -11,6 +11,8 @@ import axios from "axios"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faImage} from "@fortawesome/free-solid-svg-icons"
 
+import { Icon } from "./Icon"
+
 export const OrganizationProfile = () => {
     const navigate = useNavigate()
     const [ orgData, setOrgData ] = useState({}) 
@@ -63,8 +65,15 @@ export const OrganizationProfile = () => {
                         </div>
                     </div>
 
-                    <div>
-                        
+                    <div className="flex w-3/4 p-4">
+                        {
+                            orgData?.products?.map((value, index) => {
+                                return <Icon
+                                    key={index}
+                                    iconId={value?.product_id}
+                                />
+                            })
+                        }                        
                     </div>
 
                     <div className="w-3/4 p-4 text-slate-600">

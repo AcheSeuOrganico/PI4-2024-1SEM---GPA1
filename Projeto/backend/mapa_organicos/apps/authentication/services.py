@@ -1,13 +1,10 @@
 
 from apps.authentication.models import User, UserType
 from apps.common.models import Address  
+from apps.common.serializers import AddressSerializer  
 
 
-def update_user(id, data, user_type_data, address_data):
-    print("Data:", data)
-    print("User Type Data:", user_type_data)
-    print("Address Data:", address_data)
-
+def update_user(id, data):
     user = User.objects.get(id=id)
     
     user.first_name = data.get('first_name')
@@ -15,16 +12,24 @@ def update_user(id, data, user_type_data, address_data):
     user.email = data.get('email')
     user.description = data.get('description')
     user.fantasy_name = data.get('fantasy_name')
-
-    print("User Type ID:", user_type_data)
-
-    # Fetch UserType object based on user_type_data
-    user_type = UserType.objects.get(type_id=user_type_data)
-    user.user_type = user_type
     
-    print("User Type:", user_type)
-
-    print("Address Data:", address_data)
-    user.address = Address.objects.create(**address_data)
-
+    data = data.get('address')
+    address_data = {
+        'cep': data.get('cep'),
+        'name': data.get('name'),
+        'city': data.get('city'),
+        'state': data.get('state'),
+        'latitude': data.get('latitude'),
+        'longitude': data.get('longitude'),
+        'number': int(data.get('number'))  
+    }
+    
+    address_serializer = AddressSerializer(data=address_data)
+    if address_serializer.is_valid():
+        address_instance = address_serializer.save()
+        user.address = address_instance
+    else:
+        # Handle serializer errors if needed
+        pass
+    
     user.save()

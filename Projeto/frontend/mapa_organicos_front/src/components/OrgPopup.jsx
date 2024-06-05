@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faArrowRight} from "@fortawesome/free-solid-svg-icons"
 
 import { Link } from 'react-router-dom'
+import { Icon } from './Icon'
 
 export const OrgPopup = ({ orgData, visit }) => {
 
@@ -9,6 +10,18 @@ export const OrgPopup = ({ orgData, visit }) => {
         <div className="">
             <div>
                 <span className="text-lg font-bold">{orgData?.fantasy_name}</span>
+            </div>
+
+            <div className='flex'>
+            {
+                orgData?.products?.map((value, index) => {
+                    return <Icon
+                        key={index}
+                        iconId={value?.product_id}
+                        className='w-3 h-3'
+                    />
+                })
+            } 
             </div>
 
             <div className="flex flex-col h-20 justify-between my-2">

@@ -16,9 +16,10 @@ class BaseUserManager(BUM):
         user_type=None,
         address=None,
         is_active=True, 
-        password=None
+        password=None,
+        products=[]
     ):
-        user = self.model(
+        user: User = self.model(
             username=username,
             is_active=is_active,
             first_name=first_name,
@@ -34,6 +35,9 @@ class BaseUserManager(BUM):
             user.set_password(password)
         else:
             user.set_unusable_password()
+
+        if products:
+            user.products.set(products)
 
         user.full_clean()
         user.save(using=self._db)
