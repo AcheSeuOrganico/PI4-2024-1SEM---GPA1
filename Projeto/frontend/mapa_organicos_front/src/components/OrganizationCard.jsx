@@ -4,6 +4,8 @@ import { faLocationDot } from '@fortawesome/free-solid-svg-icons'
 
 import { Link } from 'react-router-dom'
 
+import { Icon } from './Icon'
+
 export const OrganizationCard =  ({ orgData }) => {
 
     return (
@@ -32,6 +34,18 @@ export const OrganizationCard =  ({ orgData }) => {
             </div>
 
             <div className='flex items-center justify-center text-slate-600'>
+                <div className='mx-2'>
+                    {orgData?.user_type?.type_name}
+                </div>
+
+                {
+                    orgData?.products?.map((value, index) => {
+                        return <Icon
+                            key={index}
+                            iconId={value?.product_id}
+                        />
+                    })
+                } 
 
                 <div className='mx-2'>
                     <FontAwesomeIcon icon={faLocationDot} />
