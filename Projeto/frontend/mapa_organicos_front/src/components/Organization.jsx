@@ -38,12 +38,12 @@ export const OrganizationProfile = () => {
                         {orgData?.fantasy_name}    
                     </div>
 
-                    <div className="flex h-[250px]">
-                        <div className="w-1/4 flex items-center justify-center text-slate-600">
+                    <div className="flex flex-col">
+                        <div className="w-full flex items-center justify-center text-slate-600">
                             {
                                 orgData?.img ? (
                                     <div>
-
+                                        <img src={`http://localhost:8002${orgData?.img}`} className="w-full"/>
                                     </div>
                                 ) : (
                                     <div className="flex items-center justify-center border-2 w-40 h-40 rounded-full">
@@ -55,7 +55,7 @@ export const OrganizationProfile = () => {
 
                         <div className="w-3/4 p-4 text-slate-600">
                             <span className="my-2 text-2xl font-medium">Descrição...</span>
-                            <div className="my-2">
+                            <div className="my-2 whitespace-pre-line">
                                 {
                                     orgData?.description ? orgData.description : "Sem descrição..."
                                 }
@@ -75,7 +75,7 @@ export const OrganizationProfile = () => {
                             })
                         }                        
                     </div>
-
+                        {console.log(orgData)}
                     <div className="w-3/4 p-4 text-slate-600">
 
                         <span className="my-2 text-2xl font-medium">Informações</span>

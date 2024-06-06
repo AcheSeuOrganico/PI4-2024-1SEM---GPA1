@@ -18,7 +18,7 @@ export const RegisterOrganizationFields = ({ handleChange, formData, fieldErrors
                     type="text"
                     name="address.cep"
                     onChange={handleChange}
-                    value={formData.address.cep }/>
+                    value={formData?.address?.cep }/>
             </div>
 
             <div>
@@ -33,7 +33,7 @@ export const RegisterOrganizationFields = ({ handleChange, formData, fieldErrors
                     type="text"
                     name="address.state"
                     onChange={handleChange}
-                    value={formData.address.state}
+                    value={formData?.address?.state}
                     disabled
                     />
             </div>
@@ -50,7 +50,7 @@ export const RegisterOrganizationFields = ({ handleChange, formData, fieldErrors
                     type="text"
                     name="address.city"
                     onChange={handleChange}
-                    value={formData.address.city}
+                    value={formData?.address?.city}
                     disabled
                     />
             </div>
@@ -67,7 +67,7 @@ export const RegisterOrganizationFields = ({ handleChange, formData, fieldErrors
                     type="text"
                     name="address.name"
                     onChange={handleChange}
-                    value={formData.address.name}
+                    value={formData?.address?.name}
                     disabled
                     />
             </div>
@@ -83,7 +83,7 @@ export const RegisterOrganizationFields = ({ handleChange, formData, fieldErrors
                     placeholder="Numero" 
                     type="text"
                     name="address.number"
-                    value={formData.address.number}
+                    value={formData?.address?.number}
                     onChange={handleChange}/>
             </div>
         </>

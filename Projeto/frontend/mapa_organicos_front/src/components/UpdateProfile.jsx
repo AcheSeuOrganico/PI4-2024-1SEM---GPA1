@@ -83,7 +83,11 @@ export const UpdateProfile = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         apiClient().post(
-            'http://localhost:8002/api/auth/update/', formData)
+            'http://localhost:8002/api/auth/update/', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
         .then( res => {
             toast("Usuário atualizado com sucesso")
         })
@@ -107,7 +111,7 @@ export const UpdateProfile = () => {
                 setFormData(res?.data[0])
                 setFormData(prevState => ({
                     ...prevState,
-                    products: prevState.products.map(product => product.product_id)
+                    products: prevState?.products?.map(product => product?.product_id)
                   }));
             })
             .catch( err => {
@@ -131,18 +135,12 @@ export const UpdateProfile = () => {
 
     useEffect(() => {
         if(selectedImage){
-            const reader = new FileReader();
-
-            reader.onloadend = () => {
-
-                setFormData(prev => ({...prev, img: reader.result}))
-              };
-            reader.readAsDataURL(selectedImage);
+            setFormData(prev => ({...prev, img:selectedImage}))
         }
     }, [selectedImage])
 
     useEffect(()=>{
-        if(formData.address.cep.length === 8){
+        if(formData?.address?.cep?.length === 8){
             axios.get('https://cep.awesomeapi.com.br/json/'+formData.address.cep)
                 .then(
                     res => {
@@ -176,7 +174,7 @@ export const UpdateProfile = () => {
             }));
         }
         
-    }, [formData.address.cep])
+    }, [formData?.address?.cep])
 
     return (
         <div className="flex flex-col w-[60%] m-auto">
@@ -242,8 +240,8 @@ export const UpdateProfile = () => {
                         <select className="my-2 w-1/3 shadow p-2 rounded" onChange={handleControllerChange}>
                             <option></option>
                             {
-                                userTypes.map((value, _) => {
-                                    if(value?.id === formData.user_type.type_id){
+                                userTypes?.map((value, _) => {
+                                    if(value?.id === formData?.user_type?.type_id){
                                         return <option value={`${value?.id}`} selected>{value?.name}</option>
                                     }else{
                                         return <option value={`${value?.id}`}>{value?.name}</option>
@@ -263,7 +261,7 @@ export const UpdateProfile = () => {
                                 value={value.product_id} 
                                 className="m-1" 
                                 onChange={handleProductChange} 
-                                checked={formData.products.includes(value.product_id)}
+                                checked={formData?.products?.includes(value?.product_id)}
                                 />
                                 <Icon className="m-1" iconId={value.product_id} />
                                 <span className="m-1">{value.name}</span>

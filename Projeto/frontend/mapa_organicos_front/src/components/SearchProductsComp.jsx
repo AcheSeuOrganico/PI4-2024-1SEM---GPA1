@@ -142,20 +142,22 @@ export const SearchProductsComp = () => {
                                 return item[key] === value;
                             });
                         })?.map((orgData) => {
-                            return (
-                                <Marker 
-                                    key={orgData.id}
-                                    position={[orgData.address.latitude, orgData.address.longitude]}
-                                    className='text-slate-900'
-                                >
-                                    <Popup>
-                                        <OrgPopup
-                                            orgData={orgData}
-                                            visit={true}
-                                        />
-                                    </Popup>
-                                </Marker>
-                            )
+                            if(orgData?.address?.latitude &&orgData?.address?.longitude ){
+                                return (
+                                    <Marker 
+                                        key={orgData.id}
+                                        position={[orgData?.address?.latitude, orgData?.address?.longitude]}
+                                        className='text-slate-900'
+                                    >
+                                        <Popup>
+                                            <OrgPopup
+                                                orgData={orgData}
+                                                visit={true}
+                                            />
+                                        </Popup>
+                                    </Marker>
+                                )   
+                            }
                         })
                     }
                 </MapContainer>
