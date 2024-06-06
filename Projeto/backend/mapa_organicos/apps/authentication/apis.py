@@ -9,6 +9,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView,
 )
+from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.auth.models import User
 
 from apps.common.mixins import ApiAuthMixin
@@ -73,15 +74,35 @@ class UpdateUserApi(ApiAuthMixin, APIView):
         last_name = serializers.CharField(max_length=255)
         email = serializers.EmailField()
         fantasy_name = serializers.CharField(max_length=255)
-        address = AddressSerializer()
         description = serializers.CharField(max_length=1024, allow_null=True, allow_blank=True, required=False)
-        products = serializers.ListField(child=serializers.CharField())
-        img = Base64StringField()
+        products = serializers.ListField(child=serializers.CharField(), allow_null=True, required=False)
+
+    parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request):
+        address_data = {
+            'cep': request.data.get('address[cep]'),
+            'name': request.data.get('address[name]'),
+            'city': request.data.get('address[city]'),
+            'state': request.data.get('address[state]'),
+            'latitude': request.data.get('address[latitude]'),
+            'longitude': request.data.get('address[longitude]'),
+            'number': int(request.data.get('address[number]', 0))  
+        }
+        img = request.data.get('img')
+        products = request.data.getlist('products[]')
+
+        missing_address_fields = [field for field, value in address_data.items() if not value]
+        if missing_address_fields:
+            return Response(status=400, data={'error': f'Missing address fields: {", ".join(missing_address_fields)}'})
+
         serializer = self.UpdateUserSerializer(data=request.data)
         if serializer.is_valid():
-            update_user(request.user.id, serializer.validated_data)
+            validated_data = serializer.validated_data
+            validated_data['address'] = address_data 
+            validated_data['img'] = img
+            validated_data['products'] = products
+            update_user(request.user.id, validated_data)
             return Response(status=200, data=serializer.data)
         print(serializer.errors)
         return Response(status=400, data=serializer.errors)

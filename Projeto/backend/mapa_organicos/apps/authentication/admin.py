@@ -12,6 +12,7 @@ class UserAdmin(UserAdmin):
         *UserAdmin.fieldsets,
         ("User Type", {"fields": ("user_type",)}),
         ("Products", {"fields": ("products",)}),
+        ("img", {"fields": ("img",)})
     )
 
 
