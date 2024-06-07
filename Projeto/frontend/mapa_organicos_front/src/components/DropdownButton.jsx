@@ -6,11 +6,12 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { faMap } from '@fortawesome/free-solid-svg-icons'
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { faPager } from '@fortawesome/free-solid-svg-icons'
 
 import { Link } from 'react-router-dom'
 
 export const DropdownButton = () => {
-    const { isAuthenticated, logout } = useContext(AuthContext)
+    const { isAuthenticated, logout, userData } = useContext(AuthContext)
     const [ isActive, setIsActive ] = useState(false)
 
     const handleMouseEnter = () => {
@@ -49,6 +50,12 @@ export const DropdownButton = () => {
                                 className='m-2 hover:cursor-pointer flex items-center'
                                 to={`/profile`}
                                 ><FontAwesomeIcon icon={faUser} className='m-2'/>Perfil
+                            </Link>
+                            {console.log(userData)}
+                            <Link   
+                                className='m-2 hover:cursor-pointer flex items-center'
+                                to={`/organizations/${userData?.user_id}`}
+                                ><FontAwesomeIcon icon={faPager} className='m-2'/>Página
                             </Link>
                             
                             <div 
