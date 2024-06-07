@@ -52,6 +52,7 @@ export const SearchProductsComp = () => {
         e.preventDefault()
         axios.get('http://localhost:8002/api/organizations/?search=' + searchInput)
             .then( res => {
+                console.log(res.data)
                 setOrganizations(res.data)
             })
             .catch( err => {

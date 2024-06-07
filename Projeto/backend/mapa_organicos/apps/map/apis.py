@@ -45,5 +45,7 @@ class OrganizationsAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         users = User.objects.filter(user_type__type_id__in=[1,2,3]).select_related('address', 'user_type')
+        if search := request.query_params.get('search'):
+            users = users.filter(fantasy_name__contains=search)
         serializer = self.OutputSerializer(users, many=True) 
         return Response(status=200, data=serializer.data)
