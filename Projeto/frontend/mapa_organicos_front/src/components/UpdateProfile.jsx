@@ -82,6 +82,7 @@ export const UpdateProfile = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        console.log(formData)
         apiClient().post(
             'http://localhost:8002/api/auth/update/', formData, {
                 headers: {
