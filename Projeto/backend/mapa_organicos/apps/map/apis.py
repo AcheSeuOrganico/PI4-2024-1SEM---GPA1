@@ -8,8 +8,14 @@ from apps.authentication.models import User
 from apps.authentication.serializers import UserTypeSerializer
 from apps.common.serializers import AddressSerializer, ProductSerializer
 from apps.common.models import Products
+from rest_framework.pagination import PageNumberPagination
 
 # Create your views here.
+class OrganizationsPagination(PageNumberPagination):
+    page_size = 50
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
 
 
 class OrganizationAPIView(APIView):
@@ -47,5 +53,9 @@ class OrganizationsAPIView(APIView):
         users = User.objects.filter(user_type__type_id__in=[1,2,3]).select_related('address', 'user_type')
         if search := request.query_params.get('search'):
             users = users.filter(fantasy_name__contains=search)
-        serializer = self.OutputSerializer(users, many=True) 
-        return Response(status=200, data=serializer.data)
+
+        paginator = OrganizationsPagination()
+        paginated_users = paginator.paginate_queryset(users, request)
+        
+        serializer = self.OutputSerializer(paginated_users, many=True)
+        return paginator.get_paginated_response(serializer.data)
