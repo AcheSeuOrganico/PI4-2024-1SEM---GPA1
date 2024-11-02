@@ -13,5 +13,5 @@ urlpatterns = [
 
     path('api/v2/organizations/', OrganizationsAPIViewV2.as_view(), name='organizations'),
     path('api/v2/organization/<id>', OrganizationAPIViewV2.as_view(), name='organizations'),
-    path('api/v2/organizations/<id>', OrganizationsAPIViewV2.as_view(), name='organizations')
+    path('api/v2/organizations/<id>', OrganizationAPIViewV2.as_view(), name='organizations')
 ]

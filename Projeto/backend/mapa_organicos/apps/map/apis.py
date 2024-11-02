@@ -95,9 +95,9 @@ class OrganizationAPIViewV2(APIView):
 
         class Meta:
             model = Organization
-            fields = ['id', 'id_user', 'description', 'fantasy_name', 'username', 'email', 'address', 'products', 'img']
+            fields = ['id', 'description', 'fantasy_name', 'address', 'products', 'img']
 
     def get(self, request, id, *args, **kwargs):
-        organization = Organization.objects.filter(id=id).select_related('address', 'user_type', 'user_id')
-        serializer = self.OutputSerializer(organization, many=True) 
+        organization = Organization.objects.get(id=id)
+        serializer = self.OutputSerializer(organization, many=False) 
         return Response(status=200, data=serializer.data)
