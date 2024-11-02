@@ -28,7 +28,7 @@ export const RegisterForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        axios.post('http://localhost:8002/api/accounts/register/', formData)
+        axios.post('http://192.168.0.8:8000/api/accounts/register/', formData)
             .then(
                 res => {
                     if(res.status === 200){

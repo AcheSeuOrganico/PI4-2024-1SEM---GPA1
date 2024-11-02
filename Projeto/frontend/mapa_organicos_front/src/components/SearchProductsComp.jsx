@@ -86,9 +86,9 @@ export const SearchProductsComp = () => {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:8002/api/organizations/')
+        axios.get('http://192.168.0.8:8000/api/organizations/')
             .then( res => {
-                setOrganizations(res.data)
+                setOrganizations(res.data.results)
             })
             .catch( err => {
                 console.log(err)

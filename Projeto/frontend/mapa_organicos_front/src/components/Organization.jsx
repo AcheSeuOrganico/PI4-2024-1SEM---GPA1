@@ -19,7 +19,7 @@ export const OrganizationProfile = () => {
     const { id } = useParams()
 
     useEffect(() => {
-        axios.get('http://localhost:8002/api/organizations/' + id)
+        axios.get('http://192.168.0.8:8000/api/organizations/' + id)
             .then( res => {
                 setOrgData(res?.data[0])
             })
@@ -43,7 +43,7 @@ export const OrganizationProfile = () => {
                             {
                                 orgData?.img ? (
                                     <div>
-                                        <img src={`http://localhost:8002${orgData?.img}`} className="w-full"/>
+                                        <img src={`http://192.168.0.8:8000${orgData?.img}`} className="w-full"/>
                                     </div>
                                 ) : (
                                     <div className="flex items-center justify-center border-2 w-40 h-40 rounded-full">
