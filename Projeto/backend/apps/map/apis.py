@@ -104,7 +104,8 @@ class OrganizationsAPIViewV2(APIView):
         return paginator.get_paginated_response(serializer.data)
 
     def post(self, request, *args, **kwargs):
-        user = User.objects.get(id=1)
+        user = User.objects.order_by('-id')[0]
+        print(user)
         input_serializer = self.InputSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
 
