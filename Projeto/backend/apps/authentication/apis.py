@@ -58,6 +58,7 @@ class UserMeApi(ApiAuthMixin, APIView):
 class RegisterUserApi(APIView):
 
     def post(self, request):
+        print(request.data)
         serializer = RegisterUserSerializer(data=request.data)
         print(request.data)
         if serializer.is_valid():

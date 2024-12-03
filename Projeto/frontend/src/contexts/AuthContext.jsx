@@ -16,7 +16,7 @@ const AuthProvider = ({children}) => {
     const [ loginErrorMessages, setLoginErrorMessages ] = useState([])
 
     const login = (userData) => {
-        axios.post(`http://192.168.0.8:8000/api/auth/login/`, {
+        axios.post(`http://192.168.0.3:8000/api/auth/login/`, {
             username: userData.username, 
             password: userData.password
         })

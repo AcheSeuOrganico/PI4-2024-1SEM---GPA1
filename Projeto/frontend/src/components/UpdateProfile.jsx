@@ -84,7 +84,7 @@ export const UpdateProfile = () => {
         e.preventDefault()
         console.log(formData)
         apiClient().post(
-            'http://192.168.0.8:8000/api/auth/update/', formData, {
+            'http://192.168.0.3:8000/api/auth/update/', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -107,7 +107,7 @@ export const UpdateProfile = () => {
 
     useEffect(() => {
         if(userData?.user_id){
-            axios.get('http://192.168.0.8:8000/api/organizations/' + userData.user_id)
+            axios.get('http://192.168.0.3:8000/api/organizations/' + userData.user_id)
             .then( res => {
                 setFormData(res?.data[0])
                 setFormData(prevState => ({
@@ -123,7 +123,7 @@ export const UpdateProfile = () => {
 
     useEffect(() => {
         if(userData?.user_id){
-            axios.get('http://192.168.0.8:8000/api/products')
+            axios.get('http://192.168.0.3:8000/api/products')
             .then( res => {
                 console.log(res?.data)
                 setProducts(res?.data)

@@ -11,6 +11,12 @@ from apps.common.serializers import AddressSerializer, ProductSerializer
 from apps.common.models import Products
 from rest_framework.pagination import PageNumberPagination
 from apps.map.models import Organization
+from apps.common.models import (
+    Address,
+    Products
+)
+
+from rest_framework import status
 
 # Create your views here.
 class OrganizationsPagination(PageNumberPagination):
@@ -66,11 +72,21 @@ class OrganizationsAPIView(APIView):
 class OrganizationsAPIViewV2(APIView):
     class OutputSerializer(serializers.ModelSerializer):
         address = AddressSerializer()
-        products = ProductSerializer(many=True) 
+        products = ProductSerializer(many=True)
 
         class Meta:
             model = Organization
             fields = ['id', 'description', 'fantasy_name', 'address', 'products', 'img']
+
+    class InputSerializer(serializers.ModelSerializer):
+        fantasy_name = serializers.CharField(max_length=255)
+        description = serializers.CharField(max_length=1024, allow_null=True, allow_blank=True, required=False)
+        address = AddressSerializer()
+        products = serializers.ListField(child=serializers.IntegerField(), allow_null=True, required=False)
+
+        class Meta:
+            model = Organization
+            fields = ['description', 'fantasy_name', 'address', 'products', 'img']
 
     def get(self, request, *args, **kwargs):
         organization = Organization.objects.select_related('address', 'user_id')
@@ -86,7 +102,32 @@ class OrganizationsAPIViewV2(APIView):
         
         serializer = self.OutputSerializer(paginated_organization, many=True)
         return paginator.get_paginated_response(serializer.data)
-    
+
+    def post(self, request, *args, **kwargs):
+        user = User.objects.get(id=1)
+        input_serializer = self.InputSerializer(data=request.data)
+        input_serializer.is_valid(raise_exception=True)
+
+        address_data = input_serializer.validated_data.pop('address', None)
+        products_data = input_serializer.validated_data.pop('products', [])
+
+        if address_data:
+            address, created = Address.objects.get_or_create(**address_data)
+        else:
+            address = None
+
+        organization = Organization.objects.create(
+            **input_serializer.validated_data,
+            address=address,
+            user_id=user
+        )
+
+        if products_data:
+            products = Products.objects.filter(pk__in=products_data)
+            organization.products.set(products)
+
+        output_serializer = self.OutputSerializer(organization)
+        return Response(output_serializer.data, status=status.HTTP_201_CREATED)
 
 class OrganizationAPIViewV2(APIView):
     class OutputSerializer(serializers.ModelSerializer):

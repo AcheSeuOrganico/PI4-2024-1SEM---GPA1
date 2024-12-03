@@ -50,7 +50,7 @@ export const SearchProductsComp = () => {
 
     const handleSearchSubmit = (e) => {
         e.preventDefault()
-        axios.get('http://localhost:8002/api/organizations/?search=' + searchInput)
+        axios.get('http://192.168.0.3:8000/api/organizations/?search=' + searchInput)
             .then( res => {
                 console.log(res.data)
                 setOrganizations(res.data)
@@ -71,7 +71,7 @@ export const SearchProductsComp = () => {
             else{
                 delete prev[e.target.name]
                 if(Object.keys(prev).length === 0){
-                    axios.get('http://localhost:8002/api/organizations/')
+                    axios.get('http://192.168.0.3:8000/api/organizations/')
                     .then( res => {
                         setOrganizations(res.data)
     
@@ -86,7 +86,7 @@ export const SearchProductsComp = () => {
     }
 
     useEffect(() => {
-        axios.get('http://192.168.0.8:8000/api/organizations/')
+        axios.get('http://192.168.0.3:8000/api/organizations/')
             .then( res => {
                 setOrganizations(res.data.results)
             })

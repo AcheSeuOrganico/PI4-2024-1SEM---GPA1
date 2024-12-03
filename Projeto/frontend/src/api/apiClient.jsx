@@ -2,7 +2,7 @@ import axios from 'axios';
 
 
 export default function apiClient(){
-    const baseURL = 'http://192.168.0.8:8000'
+    const baseURL = 'http://192.168.0.3:8000'
     let token = localStorage.getItem("token");
     let refresh = localStorage.getItem("refreshToken");
 
