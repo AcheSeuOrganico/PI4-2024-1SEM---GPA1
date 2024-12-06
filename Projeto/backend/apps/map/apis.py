@@ -103,6 +103,7 @@ class OrganizationsAPIViewV2(APIView):
         paginated_organization = paginator.paginate_queryset(organization, request)
         
         serializer = self.OutputSerializer(paginated_organization, many=True)
+        print(serializer.data)
         return paginator.get_paginated_response(serializer.data)
 
     def post(self, request, *args, **kwargs):
@@ -117,9 +118,7 @@ class OrganizationsAPIViewV2(APIView):
         user_id = input_serializer.validated_data.pop('user_id', None)
 
         if user_id:
-            print("??????", user_id)
             user = User.objects.get(id=user_id)
-            print(user)
 
         if address_data:
             address, created = Address.objects.get_or_create(**address_data)
@@ -140,13 +139,15 @@ class OrganizationsAPIViewV2(APIView):
         return Response(output_serializer.data, status=status.HTTP_201_CREATED)
 
     def patch(self, request, pk, *args, **kwargs):
+        print(request.data)
         organization = get_object_or_404(Organization, pk=pk)
-        
+
         input_serializer = self.InputSerializer(organization, data=request.data, partial=True)
         input_serializer.is_valid(raise_exception=True)
 
         address_data = input_serializer.validated_data.pop('address', None)
         products_data = input_serializer.validated_data.pop('products', [])
+        user_id = input_serializer.validated_data.pop('user_id', None)
 
         if address_data:
             if organization.address:
@@ -159,6 +160,10 @@ class OrganizationsAPIViewV2(APIView):
 
         for attr, value in input_serializer.validated_data.items():
             setattr(organization, attr, value)
+
+        if user_id:
+            user = get_object_or_404(User, pk=user_id)
+            organization.user = user
 
         if products_data:
             products = Products.objects.filter(pk__in=products_data)
